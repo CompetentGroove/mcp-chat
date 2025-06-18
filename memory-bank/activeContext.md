@@ -1,7 +1,7 @@
 # Active Context: y-gui
 
 ## Current Focus
-Enhancing the web-based GUI for chat interactions with bot configuration and MCP server management. The focus is on creating a secure, responsive interface that provides seamless access to chat functionality with configurable AI providers and MCP servers. Recently integrated Auth0 authentication to replace the basic secret key authentication system.
+Enhancing the web-based GUI for chat interactions with bot configuration and MCP server management. The focus is on creating a secure, responsive interface that provides seamless access to chat functionality with configurable AI providers and MCP servers. Authentication has been removed to allow open access without login.
 
 ## Recent Changes
 1. Project structure established with React, TypeScript, and Cloudflare Workers
@@ -22,12 +22,6 @@ Enhancing the web-based GUI for chat interactions with bot configuration and MCP
     - Modified to parse tools and clean assistant messages (removing tool parameter parts)
     - Updated to end response immediately after tool detection without waiting for confirmation
     - Enhanced tool confirmation endpoint to directly execute MCP tools after confirmation
-16. Integrated Auth0 authentication:
-    - Added @auth0/auth0-react SDK
-    - Replaced secret key authentication with Auth0
-    - Added Google login support
-    - Created authenticated API utilities
-    - Updated components to use Auth0 hooks
 
 ## Active Decisions
 
@@ -49,11 +43,7 @@ Enhancing the web-based GUI for chat interactions with bot configuration and MCP
 ## Current Considerations
 
 ### Authentication
-- Auth0 integration for secure authentication
-- Google social login support
-- Token-based session management
-- Secure storage access
-- API security with Auth0 tokens
+Authentication has been removed. All features are accessible without login.
 
 ### User Experience
 - Responsive design
@@ -73,8 +63,8 @@ Enhancing the web-based GUI for chat interactions with bot configuration and MCP
 ## Next Steps
 
 ### Immediate Tasks
-1. Configure backend to validate Auth0 tokens
-2. Add Home Page and refactor chat history search
+1. Add Home Page and refactor chat history search
+   - Root path currently auto-creates a chat and redirects to the chat view
 3. Add chat catalog for multi round messages
 4. Implement bot and MCP server configuration editing
 5. Enhance error handling for message sending
@@ -93,16 +83,9 @@ Enhancing the web-based GUI for chat interactions with bot configuration and MCP
 3. Performance optimization approaches
 4. Future feature priorities
 5. Best approach for managing bot and MCP server configurations
-6. Additional Auth0 features to implement (roles, permissions, etc.)
 
 ## Current Status
-Basic bot and MCP configuration display implemented. Chat interface fully functional with message display, metadata, and message sending capabilities. Settings component allows viewing bot and MCP server configurations. Basic chat sending function is now complete.
-
-Auth0 authentication has been integrated to replace the basic secret key authentication. The system now supports:
-- Login with Auth0 Universal Login
-- Google social login
-- Secure token management
-- Authenticated API requests
+Basic bot and MCP configuration display implemented. Chat interface fully functional with message display, metadata, and message sending capabilities. Settings component allows viewing bot and MCP server configurations. Basic chat sending function is now complete. Authentication has been removed so the app runs without login.
 
 MCP tool handling has been streamlined with the following improvements:
 1. When an AI response contains a tool use, the system now:
@@ -116,4 +99,4 @@ MCP tool handling has been streamlined with the following improvements:
    - Adds this message to the chat history
    - Returns the result to the client
 
-Next steps include configuring the backend to validate Auth0 tokens, implementing editing capabilities for configurations, and enhancing the home page.
+Next steps include implementing editing capabilities for configurations and enhancing the home page.

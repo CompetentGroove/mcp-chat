@@ -1,7 +1,6 @@
 import { corsHeaders } from '../middleware/cors';
 import { swaggerUiHtml } from './ui';
-import { schemas, securitySchemes } from './schemas';
-import { authPaths } from './paths/auth';
+import { schemas } from './schemas';
 import { chatPaths } from './paths/chat';
 import { toolPaths } from './paths/tool';
 import { botPaths } from './paths/bot';
@@ -28,11 +27,9 @@ export async function handleApiDocs(request: Request): Promise<Response> {
         },
       ],
       components: {
-        securitySchemes,
         schemas,
       },
       paths: {
-        ...authPaths,
         ...chatPaths,
         ...toolPaths,
         ...botPaths,

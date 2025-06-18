@@ -1,4 +1,3 @@
-import { useAuth0 } from '@auth0/auth0-react';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useBot } from '../contexts/BotContext';
@@ -11,7 +10,6 @@ interface HomeProps {
 
 
 export default function Home({ }: HomeProps) {
-  const { user } = useAuth0();
   const navigate = useNavigate();
   const { isDarkMode } = useTheme();
 
@@ -56,7 +54,7 @@ export default function Home({ }: HomeProps) {
       <main className="flex flex-col h-full justify-center">
         {/* Greeting */}
         <div className={`w-full max-w-3xl mx-auto mb-6 text-center ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>
-          <h1 className="text-4xl mb-2">Welcome, {user?.name || 'there'}.</h1>
+          <h1 className="text-4xl mb-2">Welcome.</h1>
           <p className="text-2xl text-gray-500">How can I help you today?</p>
         </div>
         {/* New Chat Input */}

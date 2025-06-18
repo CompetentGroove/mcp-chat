@@ -72,19 +72,16 @@ export class McpServerD1Repository implements McpServerRepository {
   async updateMcpServer(name: string, mcp_server: McpServerConfig): Promise<void> {
     try {
       await this.initSchema();
-      
-      // Update the MCP server
-      const result = await this.db.prepare(`
-        UPDATE mcp_server 
-        SET json_content = ?
-        WHERE user_prefix = ? AND name = ?
+
+      // Use an upsert so that default servers returned from the environment can
+      // be persisted even if they don't already exist in the table.
+      await this.db.prepare(`
+        INSERT INTO mcp_server (user_prefix, name, json_content)
+        VALUES (?, ?, ?)
+        ON CONFLICT(user_prefix, name) DO UPDATE SET json_content = excluded.json_content
       `)
-      .bind(JSON.stringify(mcp_server), this.userPrefix, name)
+      .bind(this.userPrefix, name, JSON.stringify(mcp_server))
       .run();
-      
-      if (!result || result.meta.changes === 0) {
-        throw new Error(`MCP server with name ${name} not found`);
-      }
     } catch (error) {
       console.error('Error updating MCP server in D1:', error);
       throw error;

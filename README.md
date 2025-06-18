@@ -78,8 +78,9 @@ flowchart TD
 3. Configure environment variables:
    - Copy `backend/.dev.vars.example` to `backend/.dev.vars` and fill in the values.
      `OPENROUTER_BASE_URL` specifies the default OpenRouter API endpoint and
-     `OPENROUTER_FREE_KEY` provides a fallback API key. `API_TIMEOUT_MS` sets the
-     default timeout (in milliseconds) for provider requests. These values are
+    `OPENROUTER_FREE_KEY` provides a fallback API key. `API_TIMEOUT_MS` sets the
+    default timeout (in milliseconds) for provider requests (defaults to
+    `300000`, i.e. 5 minutes). These values are
      used whenever a bot configuration does not include its own `base_url`,
      `api_key`, or `timeout_ms`.
    - Configure Cloudflare Worker settings in `backend/wrangler.toml`
@@ -126,7 +127,7 @@ y-gui/
 - `npm run deploy`: Deploy the backend to Cloudflare Workers
 - `npm run test`: Run tests
 
-Before running the development server, copy `backend/.dev.vars.example` to `backend/.dev.vars` and set your environment variables. `OPENROUTER_BASE_URL` and `OPENROUTER_FREE_KEY` act as fallback credentials when a bot configuration omits `base_url` or `api_key`. `API_TIMEOUT_MS` defines the default request timeout used when `timeout_ms` is not specified in a bot configuration.
+Before running the development server, copy `backend/.dev.vars.example` to `backend/.dev.vars` and set your environment variables. `OPENROUTER_BASE_URL` and `OPENROUTER_FREE_KEY` act as fallback credentials when a bot configuration omits `base_url` or `api_key`. `API_TIMEOUT_MS` defines the default request timeout (5 minutes by default) used when `timeout_ms` is not specified in a bot configuration.
 
 
 When starting with `npm run dev`, the browser will open to `/`. This page automatically

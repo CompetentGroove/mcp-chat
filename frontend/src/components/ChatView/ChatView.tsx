@@ -921,7 +921,7 @@ export default function ChatView() {
                   : 'bg-blue-500 text-white hover:bg-blue-600 hover:shadow-md'
               }`}
             >
-              Go to Yovy home page
+              Go to URVA home page
             </Link>
           </div>
         </div>

@@ -1,7 +1,7 @@
 import { ChatD1Repository } from '../repository/d1/chat-d1-repository';
 import { corsHeaders } from '../middleware/cors';
 import { Env } from 'worker-configuration';
-import { ShareService } from '../serivce/share';
+import { ShareService } from '../service/share';
 
 interface ShareRequestBody {
   messageId?: string;

@@ -181,12 +181,8 @@ export class OpenAIFormatProvider implements BaseProvider {
     const apiPath = this.botConfig.custom_api_path || '/chat/completions';
     
     const controller = new AbortController();
-<<<<<<< codex/add-timeout-configuration-to-botconfig
-    const timeoutMs = this.botConfig.timeout_ms ?? 30000;
-    const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
-=======
-    const timeoutId = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS); // Abort if request takes too long
->>>>>>> main
+    const timeoutMs = this.botConfig.timeout_ms ?? REQUEST_TIMEOUT_MS;
+    const timeoutId = setTimeout(() => controller.abort(), timeoutMs); // Abort if request takes too long
 
     try {
       const response = await fetch(`${baseUrl}${apiPath}`, {
@@ -287,7 +283,7 @@ export class OpenAIFormatProvider implements BaseProvider {
           const timeoutError = error as OpenRouterError;
           timeoutError.type = 'timeout_error';
           timeoutError.status = 408;
-          timeoutError.message = `Request exceeded the configured timeout of ${REQUEST_TIMEOUT_MS / 1000} seconds. Consider increasing the timeout.`;
+          timeoutError.message = `Request exceeded the configured timeout of ${timeoutMs / 1000} seconds. Consider increasing the timeout.`;
           throw timeoutError;
         }
         // If it's already an OpenRouterError, re-throw it

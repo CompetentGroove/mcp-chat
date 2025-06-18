@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useTheme } from '../../contexts/ThemeContext';
-import { useAuth0 } from '@auth0/auth0-react';
 
 interface ShareButtonProps {
   chatId?: string;
@@ -11,7 +10,6 @@ export default function ShareButton({ chatId, messageId }: ShareButtonProps) {
   const { isDarkMode } = useTheme();
   const [isSharing, setIsSharing] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
-  const { getAccessTokenSilently } = useAuth0();
 
   // Reset copied state after timeout
   useEffect(() => {
@@ -85,18 +83,11 @@ export default function ShareButton({ chatId, messageId }: ShareButtonProps) {
 
     setIsSharing(true);
     try {
-      // Get Auth0 token
-      const accessToken = await getAccessTokenSilently();
-      if (!accessToken) {
-        throw new Error('Failed to get access token');
-      }
-
       // Call the API to generate a share link
       const response = await fetch(`/api/share/${chatId}`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${accessToken}`
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify({
           messageId: messageId

@@ -42,12 +42,9 @@ flowchart TD
 - Optimistic updates for better UX
 - Consistent state synchronization
 
-### Authentication Pattern
-- Auth0 integration for secure authentication
-- Google social login support
-- Token-based session management
-- Secure middleware implementation
-- Auth0 hooks for authentication state
+
+### Access Pattern
+Open access without authentication. No login or token management is required.
 
 ## Component Relationships
 
@@ -111,12 +108,9 @@ flowchart LR
 - Real-time synchronization
 - Error boundary handling
 
-### Authentication Flow
-- Auth0 Universal Login
-- Google social login option
-- Auth0 token generation and management
-- Secure API requests with Auth0 tokens
-- Auth0 hooks for authentication state
+
+### Access Flow
+Users open the web interface and immediately begin chatting without login.
 
 ## Error Handling
 - Global error boundaries

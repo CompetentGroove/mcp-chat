@@ -114,36 +114,10 @@ Note: When triggered by **update memory bank**, I MUST review every memory bank 
 
 REMEMBER: After every memory reset, I begin completely fresh. The Memory Bank is my only link to previous work. It must be maintained with precision and clarity, as my effectiveness depends entirely on its accuracy.
 
-## Auth0 Integration
+## Access Model
 
-### Authentication Patterns
-- Always use the useAuth0 hook from @auth0/auth0-react for authentication state
-- Use the isAuthenticated flag to determine if a user is logged in
-- Use the isLoading flag to show loading states during authentication
-- Use the getAccessTokenSilently function to get the Auth0 token for API calls
-- Use the loginWithRedirect function for login
-- Use the logout function for logout
-
-### API Authentication
-- Use the useAuthenticatedSWR hook from utils/api.ts for authenticated SWR requests
-- Use the useApi hook from utils/api.ts for authenticated API calls without SWR
-- Always include the Auth0 token in the Authorization header for API calls
-
-### Auth0 Configuration
-- Auth0 configuration is in index.tsx in the Auth0Provider component
-- Auth0 domain and clientId should be configured in the Auth0Provider
-- The redirect_uri should be set to window.location.origin
-
-### Google Login
-- Google login is enabled through Auth0 social connections
-- Use the connection parameter in loginWithRedirect to specify Google login:
-  ```tsx
-  loginWithRedirect({
-    authorizationParams: {
-      connection: 'google-oauth2'
-    }
-  })
-  ```
+Authentication has been removed from the application. All routes are open and
+no login is required. API utilities use plain `fetch` calls without tokens.
 
 ## Project Patterns
 

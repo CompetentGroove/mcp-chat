@@ -16,9 +16,9 @@ flowchart TD
     end
 
     subgraph "Backend"
-        Worker --> Auth[Auth Middleware]
-        Worker --> Storage[Storage Layer]
-        Worker --> Provider[Provider Layer]
+        Worker --> Router[API Router]
+        Router --> Storage[Storage Layer]
+        Router --> Provider[Provider Layer]
     end
 ```
 
@@ -42,12 +42,9 @@ flowchart TD
 - Optimistic updates for better UX
 - Consistent state synchronization
 
-### Authentication Pattern
-- Auth0 integration for secure authentication
-- Google social login support
-- Token-based session management
-- Secure middleware implementation
-- Auth0 hooks for authentication state
+
+### Access Pattern
+Open access without authentication. No login or token management is required.
 
 ## Component Relationships
 
@@ -73,8 +70,7 @@ flowchart LR
 ### Backend Architecture
 ```mermaid
 flowchart LR
-    Worker[Worker] --> Auth[Auth Middleware]
-    Auth --> Router[API Router]
+    Worker[Worker] --> Router[API Router]
     Router --> Storage[Storage Layer]
     Router --> Provider[Provider Layer]
     Router --> Config[Configuration Layer]
@@ -102,7 +98,7 @@ flowchart LR
 ### Backend Structure
 - Cloudflare Workers
 - R2 for storage
-- Middleware pattern for auth
+- Middleware pattern for request handling
 - RESTful API design
 
 ### Data Flow
@@ -111,12 +107,9 @@ flowchart LR
 - Real-time synchronization
 - Error boundary handling
 
-### Authentication Flow
-- Auth0 Universal Login
-- Google social login option
-- Auth0 token generation and management
-- Secure API requests with Auth0 tokens
-- Auth0 hooks for authentication state
+
+### Access Flow
+Users open the web interface and immediately begin chatting without login.
 
 ## Error Handling
 - Global error boundaries
@@ -128,7 +121,6 @@ flowchart LR
 ## Extension Points
 - Additional UI components
 - New API endpoints
-- Enhanced authentication
 - Storage optimizations
 - Provider integrations
 
@@ -136,7 +128,6 @@ flowchart LR
 - Component unit tests
 - Integration tests
 - API endpoint tests
-- Authentication testing
 - Storage layer tests
 
 ## Performance Patterns
@@ -147,8 +138,6 @@ flowchart LR
 - Edge deployment
 
 ## Security Patterns
-- Authentication middleware
-- Secure token handling
 - API request validation
 - Data sanitization
 - Error message security

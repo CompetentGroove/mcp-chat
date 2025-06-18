@@ -87,7 +87,7 @@ const Header: React.FC = () => {
                                                 <img
                                                         src="https://urva.co/wp-content/uploads/2022/02/urva_logo_outline.png"
                                                         alt="URVA logo"
-                                                        className="h-8 w-8"
+                                                        className="h-8"
                                                 />
                                         </a>
 				</div>

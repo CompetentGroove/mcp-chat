@@ -11,6 +11,7 @@ import { TocProvider } from '../contexts/TocContext';
 
 function NewChatRedirect() {
   const navigate = useNavigate();
+
   const [error, setError] = React.useState(false);
 
   React.useEffect(() => {
@@ -43,6 +44,7 @@ function NewChatRedirect() {
     </div>
   );
 }
+
 
 export default function App() {
 

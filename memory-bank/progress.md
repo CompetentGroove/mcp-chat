@@ -96,6 +96,7 @@
     - All features accessible without login
 15. Visiting the root URL now auto-creates a chat and redirects to the chat view
 
+
 ### In Progress
 1. Bot configuration editing
 2. Home page and chat history search

@@ -190,8 +190,7 @@ export class OpenAIFormatProvider implements BaseProvider {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${apiKey}`,
-          'HTTP-Referer': 'https://luohy15.com',
-          'X-Title': 'y-gui',
+          'X-Title': 'urva',
           'Accept': 'text/event-stream'
         },
         body: JSON.stringify(body),

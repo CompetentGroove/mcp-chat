@@ -101,13 +101,16 @@ const Header: React.FC = () => {
 		<header className={`fixed top-0 z-40 w-screen h-16 sm:h-0 ${isDarkMode ? 'bg-[#1a1a1a] border-gray-800' : 'bg-white border-gray-100'} `}>
 			<div className="flex items-center justify-between mx-4 mt-2 sm:mx-6 2xl:mx-8">
 				<div className="flex items-center space-x-8">
-					<a
-						className="flex items-center cursor-pointer"
-						onClick={() => navigate('/')}
-					>
-						<Logo />
-						<h1 className={`ml-3 text-lg font-light ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>Yovy</h1>
-					</a>
+                                        <a
+                                                className="flex items-center cursor-pointer"
+                                                onClick={() => navigate('/')}
+                                        >
+                                                <img
+                                                        src="https://urva.co/wp-content/uploads/2022/02/urva_logo_outline.png"
+                                                        alt="URVA logo"
+                                                        className="h-8 w-8"
+                                                />
+                                        </a>
 				</div>
 
 				{/* Right side icons and dropdown */}
@@ -128,18 +131,6 @@ const Header: React.FC = () => {
 							<path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
 						</svg>
 					</button>
-					{/* GitHub link */}
-					<a
-						href="https://github.com/luohy15/y-gui"
-						target="_blank"
-						rel="noopener noreferrer"
-						className={`${isDarkMode ? 'text-gray-400 hover:text-white' : 'text-gray-500 hover:text-gray-700'} transition-colors`}
-						aria-label="GitHub repository"
-					>
-						<svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
-							<path fillRule="evenodd" clipRule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017C2 16.455 4.865 20.127 8.84 21.594C9.34 21.684 9.52 21.383 9.52 21.125C9.52 20.895 9.513 20.244 9.51 19.382C6.73 19.991 6.14 18.077 6.14 18.077C5.685 16.909 5.029 16.611 5.029 16.611C4.139 15.973 5.096 15.986 5.096 15.986C6.084 16.052 6.613 17.017 6.613 17.017C7.5 18.56 8.97 18.121 9.54 17.878C9.629 17.188 9.889 16.749 10.175 16.497C7.954 16.243 5.62 15.38 5.62 11.548C5.62 10.425 6.01 9.51 6.632 8.796C6.532 8.553 6.192 7.611 6.732 6.212C6.732 6.212 7.562 5.95 9.5 7.266C10.29 7.047 11.14 6.938 11.99 6.934C12.84 6.938 13.69 7.047 14.48 7.266C16.418 5.95 17.248 6.212 17.248 6.212C17.788 7.611 17.448 8.553 17.348 8.796C17.97 9.51 18.36 10.425 18.36 11.548C18.36 15.391 16.023 16.239 13.795 16.489C14.165 16.801 14.495 17.419 14.495 18.358C14.495 19.708 14.484 20.808 14.484 21.125C14.484 21.386 14.664 21.69 15.174 21.594C19.145 20.127 22.007 16.456 22.007 12.017C22.007 6.484 17.53 2 12.007 2H12Z" />
-						</svg>
-					</a>
 					{/* Right side dropdown */}
 					<div className="relative" ref={dropdownRef}>
 						<button

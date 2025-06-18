@@ -65,6 +65,11 @@ export interface BotConfig {
   custom_api_path?: string;
   max_tokens?: number;
   reasoning_effort?: string;
+  /**
+   * Timeout in milliseconds for API requests. If omitted, the backend will
+   * use the default configured via the API_TIMEOUT_MS environment variable.
+   */
+  timeout_ms?: number;
 }
 
 export interface McpServerConfig {

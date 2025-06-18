@@ -181,7 +181,12 @@ export class OpenAIFormatProvider implements BaseProvider {
     const apiPath = this.botConfig.custom_api_path || '/chat/completions';
     
     const controller = new AbortController();
+<<<<<<< codex/add-timeout-configuration-to-botconfig
+    const timeoutMs = this.botConfig.timeout_ms ?? 30000;
+    const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
+=======
     const timeoutId = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS); // Abort if request takes too long
+>>>>>>> main
 
     try {
       const response = await fetch(`${baseUrl}${apiPath}`, {

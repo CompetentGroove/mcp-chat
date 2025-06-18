@@ -278,18 +278,17 @@ export class OpenAIFormatProvider implements BaseProvider {
       }
     } catch (error: unknown) {
       clearTimeout(timeoutId); // Clean up timeout
-      if (error instanceof Error) {
-        if (error.name === 'AbortError') {
-          const timeoutError = error as OpenRouterError;
-          timeoutError.type = 'timeout_error';
-          timeoutError.status = 408;
-          timeoutError.message = `Request exceeded the configured timeout of ${timeoutMs / 1000} seconds. Consider increasing the timeout.`;
-          throw timeoutError;
-        }
+      if (error instanceof DOMException && error.name === 'AbortError') {
+        const timeoutError: OpenRouterError = new Error(
+          `Request exceeded the configured timeout of ${timeoutMs / 1000} seconds. Consider increasing the timeout.`
+        );
+        timeoutError.type = 'timeout_error';
+        timeoutError.status = 408;
+        throw timeoutError;
+      }
+      if (error instanceof Error && (error as OpenRouterError).type) {
         // If it's already an OpenRouterError, re-throw it
-        if ((error as OpenRouterError).type) {
-          throw error;
-        }
+        throw error;
       }
       // For unknown errors
       const unknownError = new Error('An unknown error occurred') as OpenRouterError;

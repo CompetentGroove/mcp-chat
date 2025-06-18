@@ -120,6 +120,12 @@ y-gui/
 - `npm run deploy`: Deploy the backend to Cloudflare Workers
 - `npm run test`: Run tests
 
+
+When starting with `npm run dev`, the browser will open to `/`. This page automatically
+creates a new chat via the backend and redirects to `/chat/<id>`. If the backend
+is still starting you may briefly see a "Connecting to server…" message. Wait a
+moment and the chat window will load once the worker is ready.
+
 ## 🤖 Bot Configuration
 
 y-gui supports multiple bot configurations with the following properties:

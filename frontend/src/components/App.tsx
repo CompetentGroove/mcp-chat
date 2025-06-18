@@ -11,19 +11,40 @@ import { TocProvider } from '../contexts/TocContext';
 
 function NewChatRedirect() {
   const navigate = useNavigate();
+
+  const [error, setError] = React.useState(false);
+
   React.useEffect(() => {
-    (async () => {
+    let cancelled = false;
+
+    const createChat = async () => {
       try {
         const res = await fetch('/api/chat/id');
         const data = await res.json();
-        navigate(`/chat/${data.id}`);
+        if (!cancelled) {
+          navigate(`/chat/${data.id}`);
+        }
       } catch (err) {
         console.error('Failed to create chat', err);
+        setError(true);
+        setTimeout(createChat, 2000); // retry after delay
       }
-    })();
+    };
+
+    createChat();
+
+    return () => {
+      cancelled = true;
+    };
   }, [navigate]);
-  return <div className="h-screen flex items-center justify-center">Loading...</div>;
+
+  return (
+    <div className="h-screen flex items-center justify-center">
+      {error ? 'Connecting to server…' : 'Loading...'}
+    </div>
+  );
 }
+
 
 export default function App() {
 

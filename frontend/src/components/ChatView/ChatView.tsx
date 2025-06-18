@@ -8,7 +8,6 @@ import { useAuthenticatedSWR, useApi } from '../../utils/api';
 import { Chat, Message, McpServerConfig } from '@shared/types';
 import { mutate } from 'swr';
 import useSWR, { SWRConfiguration } from 'swr';
-import { useAuth0 } from '@auth0/auth0-react';
 import { useMcpStatus } from '../../hooks/useMcpStatus';
 import MessageInput from '../MessageInput';
 import MessageItem from './MessageItem';
@@ -22,7 +21,6 @@ export default function ChatView() {
   const location = useLocation();
   const { id } = useParams<{ id: string }>();
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const { getAccessTokenSilently } = useAuth0();
   const api = useApi();
   const { isTocOpen, setIsTocOpen, currentMessageId, setCurrentMessageId } = useToc();
   const messageRefs = useRef<Record<string, HTMLDivElement>>({});
@@ -440,18 +438,11 @@ export default function ChatView() {
     const signal = abortControllerRef.current.signal;
 
     try {
-      // Get Auth0 token
-      const accessToken = await getAccessTokenSilently();
-      if (!accessToken) {
-        throw new Error('Failed to get access token');
-      }
-
       // Make the API request
       const response = await fetch(url, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${accessToken}`
+          'Content-Type': 'application/json'
         },
         body: body,
         signal

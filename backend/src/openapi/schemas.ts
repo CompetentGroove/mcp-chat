@@ -40,12 +40,3 @@ export const schemas = {
   },
 };
 
-// Security schemes
-export const securitySchemes = {
-  bearerAuth: {
-    type: 'http',
-    scheme: 'bearer',
-    bearerFormat: 'JWT',
-    description: 'Auth0 JWT token',
-  },
-};

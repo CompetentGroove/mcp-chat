@@ -76,6 +76,11 @@ flowchart TD
    ```
 
 3. Configure environment variables:
+   - Copy `backend/.dev.vars.example` to `backend/.dev.vars` and fill in the values.
+     `OPENROUTER_BASE_URL` specifies the default OpenRouter API endpoint and
+     `OPENROUTER_FREE_KEY` provides a fallback API key. The backend uses these
+     values whenever a bot configuration does not include its own `base_url` or
+     `api_key`.
    - Configure Cloudflare Worker settings in `backend/wrangler.toml`
 
 4. Build asset:
@@ -119,6 +124,8 @@ y-gui/
 - `npm run build`: Build both frontend and backend
 - `npm run deploy`: Deploy the backend to Cloudflare Workers
 - `npm run test`: Run tests
+
+Before running the development server, copy `backend/.dev.vars.example` to `backend/.dev.vars` and set your environment variables. `OPENROUTER_BASE_URL` and `OPENROUTER_FREE_KEY` act as fallback credentials when a bot configuration omits `base_url` or `api_key`.
 
 
 When starting with `npm run dev`, the browser will open to `/`. This page automatically

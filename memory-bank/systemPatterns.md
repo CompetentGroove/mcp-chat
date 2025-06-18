@@ -16,9 +16,9 @@ flowchart TD
     end
 
     subgraph "Backend"
-        Worker --> Auth[Auth Middleware]
-        Worker --> Storage[Storage Layer]
-        Worker --> Provider[Provider Layer]
+        Worker --> Router[API Router]
+        Router --> Storage[Storage Layer]
+        Router --> Provider[Provider Layer]
     end
 ```
 
@@ -70,8 +70,7 @@ flowchart LR
 ### Backend Architecture
 ```mermaid
 flowchart LR
-    Worker[Worker] --> Auth[Auth Middleware]
-    Auth --> Router[API Router]
+    Worker[Worker] --> Router[API Router]
     Router --> Storage[Storage Layer]
     Router --> Provider[Provider Layer]
     Router --> Config[Configuration Layer]
@@ -99,7 +98,7 @@ flowchart LR
 ### Backend Structure
 - Cloudflare Workers
 - R2 for storage
-- Middleware pattern for auth
+- Middleware pattern for request handling
 - RESTful API design
 
 ### Data Flow
@@ -122,7 +121,6 @@ Users open the web interface and immediately begin chatting without login.
 ## Extension Points
 - Additional UI components
 - New API endpoints
-- Enhanced authentication
 - Storage optimizations
 - Provider integrations
 
@@ -130,7 +128,6 @@ Users open the web interface and immediately begin chatting without login.
 - Component unit tests
 - Integration tests
 - API endpoint tests
-- Authentication testing
 - Storage layer tests
 
 ## Performance Patterns
@@ -141,8 +138,6 @@ Users open the web interface and immediately begin chatting without login.
 - Edge deployment
 
 ## Security Patterns
-- Authentication middleware
-- Secure token handling
 - API request validation
 - Data sanitization
 - Error message security

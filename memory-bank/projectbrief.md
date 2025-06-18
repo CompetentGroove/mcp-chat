@@ -11,12 +11,7 @@ y-gui is a web-based interface for managing and interacting with AI chat data st
    - Message display with metadata (model, provider, timestamps)
    - Interactive chat sessions
 
-2. Authentication
-   - Basic secret key authentication
-   - Secure access to chat data
-   - Token-based session management
-
-3. User Interface
+2. User Interface
    - Responsive web design
    - Intuitive chat interface
    - Easy navigation between chats
@@ -39,7 +34,6 @@ y-gui is a web-based interface for managing and interacting with AI chat data st
 - Focus on core chat functionality
 - Support for AI provider interactions
 - Multiple bot and mcp server configuration
-- Basic authentication system
 - Essential web interface features
 - Cloudflare Workers deployment
 

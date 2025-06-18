@@ -56,7 +56,6 @@ y-gui/
 │   │   │   ├── ChatView.tsx
 │   │   │   ├── Settings.tsx
 │   │   │   ├── Header.tsx
-│   │   │   ├── Login.tsx
 │   │   │   ├── Logo.tsx
 │   │   │   └── AssistantAvatar.tsx
 │   │   ├── contexts/      # React contexts

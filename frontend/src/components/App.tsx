@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import ChatView from './ChatView/ChatView';
 import { Settings } from './Settings/Settings';
 import Header from './Header/Header';

@@ -49,7 +49,6 @@ flowchart TD
     end
 
     subgraph "Backend"
-        Worker --> Auth[Auth Middleware]
         Worker --> Storage[Storage Layer]
         Worker --> Provider[Provider Layer]
     end
@@ -141,7 +140,7 @@ y-gui supports multiple bot configurations with the following properties:
 MCP (Model Context Protocol) servers can be configured with simple:
 - **Name**: Unique identifier for the MCP server
 - **URL**: For remotely hosted MCP services
-- **Token**: Authentication token for secure server access
+ - **Token**: API token for server access
 
 Current MCP integrations include Gmail, Google Calendar, image generation, and support for custom servers to connect with virtually any API or service.
 

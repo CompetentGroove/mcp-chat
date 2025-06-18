@@ -64,6 +64,8 @@ Authentication has been removed. All features are accessible without login.
 
 ### Immediate Tasks
 1. Add Home Page and refactor chat history search
+   - Root path currently auto-creates a chat and redirects to the chat view
+
 3. Add chat catalog for multi round messages
 4. Implement bot and MCP server configuration editing
 5. Enhance error handling for message sending

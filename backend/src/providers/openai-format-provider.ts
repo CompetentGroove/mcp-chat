@@ -169,6 +169,12 @@ export class OpenAIFormatProvider implements BaseProvider {
     
     const apiKey = this.botConfig.api_key;
     const baseUrl = this.botConfig.base_url;
+    if (!baseUrl || !apiKey) {
+      const configError = new Error('Bot configuration missing base_url or api_key') as OpenRouterError;
+      configError.type = 'provider_error';
+      configError.status = 400;
+      throw configError;
+    }
     const apiPath = this.botConfig.custom_api_path || '/chat/completions';
     
     const controller = new AbortController();

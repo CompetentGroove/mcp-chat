@@ -50,6 +50,12 @@ export async function handleChatCompletions(request: Request, env: Env, userPref
         resultBotConfig.api_key = env.OPENROUTER_FREE_KEY;
         resultBotConfig.base_url = env.OPENROUTER_BASE_URL;
       }
+      if (!resultBotConfig.timeout_ms) {
+        const envTimeout = parseInt(env.API_TIMEOUT_MS || '0', 10);
+        if (envTimeout) {
+          resultBotConfig.timeout_ms = envTimeout;
+        }
+      }
       console.log('Bot config:', resultBotConfig);
 
       // Get the provider

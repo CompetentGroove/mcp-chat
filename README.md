@@ -78,9 +78,10 @@ flowchart TD
 3. Configure environment variables:
    - Copy `backend/.dev.vars.example` to `backend/.dev.vars` and fill in the values.
      `OPENROUTER_BASE_URL` specifies the default OpenRouter API endpoint and
-     `OPENROUTER_FREE_KEY` provides a fallback API key. The backend uses these
-     values whenever a bot configuration does not include its own `base_url` or
-     `api_key`.
+     `OPENROUTER_FREE_KEY` provides a fallback API key. `API_TIMEOUT_MS` sets the
+     default timeout (in milliseconds) for provider requests. These values are
+     used whenever a bot configuration does not include its own `base_url`,
+     `api_key`, or `timeout_ms`.
    - Configure Cloudflare Worker settings in `backend/wrangler.toml`
 
 4. Build asset:
@@ -125,7 +126,7 @@ y-gui/
 - `npm run deploy`: Deploy the backend to Cloudflare Workers
 - `npm run test`: Run tests
 
-Before running the development server, copy `backend/.dev.vars.example` to `backend/.dev.vars` and set your environment variables. `OPENROUTER_BASE_URL` and `OPENROUTER_FREE_KEY` act as fallback credentials when a bot configuration omits `base_url` or `api_key`.
+Before running the development server, copy `backend/.dev.vars.example` to `backend/.dev.vars` and set your environment variables. `OPENROUTER_BASE_URL` and `OPENROUTER_FREE_KEY` act as fallback credentials when a bot configuration omits `base_url` or `api_key`. `API_TIMEOUT_MS` defines the default request timeout used when `timeout_ms` is not specified in a bot configuration.
 
 
 When starting with `npm run dev`, the browser will open to `/`. This page automatically
@@ -147,6 +148,7 @@ y-gui supports multiple bot configurations with the following properties:
 - Custom API Path
 - Max Tokens
 - Reasoning Effort
+- Timeout (ms)
 
 ## 🔗 MCP Server Configuration
 

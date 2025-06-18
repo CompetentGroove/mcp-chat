@@ -23,6 +23,9 @@ interface OpenRouterError extends Error {
   status: number;
 }
 
+// Timeout for provider requests in milliseconds
+const REQUEST_TIMEOUT_MS = 10000; // 10 second timeout
+
 /**
  * OpenAI Format Provider implementation
  * This class implements the BaseProvider interface for providers using OpenAI-compatible API format
@@ -178,8 +181,12 @@ export class OpenAIFormatProvider implements BaseProvider {
     const apiPath = this.botConfig.custom_api_path || '/chat/completions';
     
     const controller = new AbortController();
+<<<<<<< codex/add-timeout-configuration-to-botconfig
     const timeoutMs = this.botConfig.timeout_ms ?? 30000;
     const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
+=======
+    const timeoutId = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS); // Abort if request takes too long
+>>>>>>> main
 
     try {
       const response = await fetch(`${baseUrl}${apiPath}`, {
@@ -280,6 +287,7 @@ export class OpenAIFormatProvider implements BaseProvider {
           const timeoutError = error as OpenRouterError;
           timeoutError.type = 'timeout_error';
           timeoutError.status = 408;
+          timeoutError.message = `Request exceeded the configured timeout of ${REQUEST_TIMEOUT_MS / 1000} seconds. Consider increasing the timeout.`;
           throw timeoutError;
         }
         // If it's already an OpenRouterError, re-throw it

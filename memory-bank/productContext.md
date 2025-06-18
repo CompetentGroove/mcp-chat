@@ -33,11 +33,9 @@ Users need a web-based interface to:
 
 ## User Workflows
 
-### Authentication Flow
-1. Access web interface
-2. Login with Auth0 (Universal Login or Google)
-3. Gain access to chat data
-4. Maintain session with Auth0 token
+### Access Flow
+1. Open the web interface
+2. Immediately start a new chat or view existing chats (no login required)
 
 ### Chat Workflow
 1. View list of existing chats
@@ -74,13 +72,9 @@ Users need a web-based interface to:
 - Environment variable management
 - Server status monitoring
 
+
 ### Authentication Features
-- Auth0 integration
-- Google social login
-- Token-based session management
-- Secure data access
-- Session persistence
-- Auth0 token validation
+*Authentication removed to allow open access*
 
 ### Interface Features
 - Responsive design

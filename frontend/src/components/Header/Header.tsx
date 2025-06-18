@@ -1,4 +1,3 @@
-import { useAuth0 } from '@auth0/auth0-react';
 import React, { useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useTheme } from '../../contexts/ThemeContext';
@@ -9,9 +8,8 @@ import SearchWindow from '../SearchWindow';
 
 
 const Header: React.FC = () => {
-	const { logout, user, isAuthenticated } = useAuth0();
-	const { toggleToc } = useToc();
-	const navigate = useNavigate();
+        const { toggleToc } = useToc();
+        const navigate = useNavigate();
 	const [selectedBot, setSelectedBot] = useState<string | null>(null);
 
 	// Get the current path
@@ -151,16 +149,10 @@ const Header: React.FC = () => {
 							}}
 							className={`${isDarkMode ? 'text-gray-400 hover:text-white hover:bg-gray-800' : 'text-gray-500 hover:text-gray-700 hover:bg-gray-100'} p-2 rounded-full transition-colors flex items-center`}
 						>
-							{/* User avatar (if authenticated) */}
-							{isAuthenticated && user?.picture && (
-								<div className="flex items-center">
-									<img
-										src={user.picture}
-										alt="User Avatar"
-										className="h-8 w-8 rounded-full object-cover border border-gray-200 dark:border-gray-700"
-									/>
-								</div>
-							)}
+                                        {/* Menu button */}
+                                        <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
+                                        </svg>
 						</button>
 
 						{showDropdown && (
@@ -226,18 +218,6 @@ const Header: React.FC = () => {
 									</div>
 								</button>
 
-								{/* Sign out option */}
-								<button
-									onClick={() => logout({ logoutParams: { returnTo: window.location.origin } })}
-									className={`block w-full text-left px-4 py-2 text-sm ${isDarkMode ? 'hover:bg-gray-700' : 'hover:bg-gray-100'}`}
-								>
-									<div className="flex items-center space-x-2">
-										<svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-											<path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
-										</svg>
-										<span>Sign out</span>
-									</div>
-								</button>
 							</div>
 						)}
 					</div>

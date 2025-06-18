@@ -28,7 +28,6 @@ Based on package.json:
 - react: ^18.2.0
 - react-dom: ^18.2.0
 - swr: ^2.2.5
-- @auth0/auth0-react: latest
 - react-router-dom: ^7.2.0
 - @cloudflare/workers-types: ^4.20240208.0
 - tailwindcss: ^3.4.1
@@ -57,7 +56,6 @@ y-gui/
 │   │   │   ├── ChatView.tsx
 │   │   │   ├── Settings.tsx
 │   │   │   ├── Header.tsx
-│   │   │   ├── Login.tsx
 │   │   │   ├── Logo.tsx
 │   │   │   └── AssistantAvatar.tsx
 │   │   ├── contexts/      # React contexts

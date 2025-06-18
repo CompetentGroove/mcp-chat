@@ -24,8 +24,7 @@ See how y-gui uses MCP integrations to extend AI capabilities:
   - 📅 Google Calendar integration for event scheduling
   - 🖼️ Image generation capabilities
   - 🧩 Expandable framework for additional MCP servers and tools
-- 🔒 Secure authentication with Auth0 and Google login
-- 🌓 Dark/light theme support
+  - 🌓 Dark/light theme support
 - 📝 All chat data stored in Cloudflare D1 for easy access and sync
 - 🔄 Real-time updates with SWR
 - 📱 Responsive design for all devices
@@ -50,7 +49,6 @@ flowchart TD
     end
 
     subgraph "Backend"
-        Worker --> Auth[Auth Middleware]
         Worker --> Storage[Storage Layer]
         Worker --> Provider[Provider Layer]
     end
@@ -62,8 +60,7 @@ flowchart TD
 
 1. Node.js and npm
 2. Cloudflare account
-3. Auth0 account
-4. API keys for AI providers
+3. API keys for AI providers
 
 ### Installation
 
@@ -80,7 +77,6 @@ flowchart TD
 
 3. Configure environment variables:
    - Configure Cloudflare Worker settings in `backend/wrangler.toml`
-   - Change the auth0 settings in `frontend/src/index.tsx` and `backend/src/utils/auth.ts`
 
 4. Build asset:
    ```bash
@@ -119,19 +115,10 @@ y-gui/
 
 - `npm run dev`: Start both frontend and backend development servers
 - `npm run dev:frontend`: Start only the frontend development server
-- `npm run dev:backend`: Start only the backend development server
+- `npm run dev:backend`: Build the frontend and then start the backend development server
 - `npm run build`: Build both frontend and backend
 - `npm run deploy`: Deploy the backend to Cloudflare Workers
 - `npm run test`: Run tests
-
-## 🔒 Authentication
-
-y-gui uses Auth0 for authentication with the following features:
-
-- Universal Login
-- Google social login
-- Token-based session management
-- Secure API access
 
 ## 🤖 Bot Configuration
 
@@ -153,7 +140,7 @@ y-gui supports multiple bot configurations with the following properties:
 MCP (Model Context Protocol) servers can be configured with simple:
 - **Name**: Unique identifier for the MCP server
 - **URL**: For remotely hosted MCP services
-- **Token**: Authentication token for secure server access
+ - **Token**: API token for server access
 
 Current MCP integrations include Gmail, Google Calendar, image generation, and support for custom servers to connect with virtually any API or service.
 
@@ -164,7 +151,6 @@ The backend provides RESTful API endpoints for:
 - Chat operations
 - Bot configuration management
 - MCP server configuration management
-- Authentication
 
 ## 🔄 Data Storage
 
@@ -174,7 +160,7 @@ The backend provides RESTful API endpoints for:
 
 ## 🧩 Technologies Used
 
-- **Frontend**: React, TypeScript, Tailwind CSS, SWR, Auth0
+- **Frontend**: React, TypeScript, Tailwind CSS, SWR
 - **Backend**: Cloudflare Workers, D1
 - **Integrations**: MCP servers, OAuth2, Gmail API, Google Calendar API, Image Generation APIs
 - **Build Tools**: Vite, Wrangler, TypeScript

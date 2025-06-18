@@ -12,12 +12,12 @@ interface SettingsProps {
 export const Settings: React.FC<SettingsProps> = ({ }) => {
   const navigate = useNavigate();
   const { section } = useParams<{ section: string }>();
-  const { isDarkMode, setTheme } = useTheme();
+  const { isDarkMode } = useTheme();
 
-  // Validate section parameter and default to 'general' if invalid
-  const activeSection = (section === 'general' || section === 'bots' || section === 'mcp-servers' || section === 'integrations')
+  // Validate section parameter and default to 'bots' if invalid
+  const activeSection = (section === 'bots' || section === 'mcp-servers' || section === 'integrations')
     ? section
-    : 'general';
+    : 'bots';
 
   // Redirect if section is invalid
   useEffect(() => {
@@ -92,21 +92,6 @@ export const Settings: React.FC<SettingsProps> = ({ }) => {
               isDarkMode ? 'bg-gray-800 border border-gray-700' : 'bg-white border border-gray-200'
             }`}>
               <Link
-                to="/settings/general"
-                onClick={() => setIsMobileMenuOpen(false)}
-                className={`block w-full text-left px-4 py-2 text-sm ${
-                  activeSection === 'general'
-                    ? isDarkMode
-                      ? 'bg-gray-700 text-white'
-                      : 'bg-blue-50 text-blue-600'
-                    : isDarkMode
-                      ? 'text-gray-300 hover:bg-gray-700'
-                      : 'text-gray-700 hover:bg-gray-100'
-                }`}
-              >
-                General
-              </Link>
-              <Link
                 to="/settings/bots"
                 onClick={() => setIsMobileMenuOpen(false)}
                 className={`block w-full text-left px-4 py-2 text-sm ${
@@ -175,22 +160,6 @@ export const Settings: React.FC<SettingsProps> = ({ }) => {
             <ul>
               <li className="mb-1">
                 <Link
-                  to="/settings/general"
-                  className={`block w-full text-left px-3 py-2 rounded-md ${
-                    activeSection === 'general'
-                      ? isDarkMode
-                        ? 'bg-gray-800 text-white font-medium'
-                        : 'bg-blue-50 text-blue-600 font-medium'
-                      : isDarkMode
-                        ? 'text-gray-300 hover:bg-gray-800'
-                        : 'text-gray-600 hover:bg-gray-100'
-                  }`}
-                >
-                  General
-                </Link>
-              </li>
-              <li className="mb-1">
-                <Link
                   to="/settings/bots"
                   className={`block w-full text-left px-3 py-2 rounded-md ${
                     activeSection === 'bots'
@@ -243,72 +212,6 @@ export const Settings: React.FC<SettingsProps> = ({ }) => {
 
         {/* Main content */}
         <div className="flex-1 p-4 sm:p-8 overflow-y-auto">
-          {/* General settings section */}
-          {activeSection === 'general' && (
-            <div className="mb-12">
-              <h2 className={`text-xl sm:text-2xl font-medium mb-6 ${isDarkMode ? 'text-white' : 'text-gray-900'} sm:hidden`}>General</h2>
-              <h2 className={`hidden sm:block text-2xl font-medium mb-6 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>General</h2>
-
-              <div className="max-w-3xl">
-                {/* User Information Section */}
-                <div className={`border-b ${isDarkMode ? 'border-gray-700' : 'border-gray-200'} py-4`}>
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <h3 className={`text-lg font-medium ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>User Information</h3>
-                      <p className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>Your account details</p>
-                    </div>
-                    <div>
-                      {userInfoLoading && <span className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>Loading...</span>}
-                      {userInfoError && <span className="text-sm text-red-500">Error loading user data</span>}
-                    </div>
-                  </div>
-
-                  {userInfo && (
-                    <div className="mt-4">
-                      <div className="flex items-center">
-                        {userInfo.picture && (
-                          <img
-                            src={userInfo.picture}
-                            alt="Profile"
-                            className="w-12 h-12 rounded-full mr-4"
-                          />
-                        )}
-                        <div>
-                          <h4 className={`font-medium ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>{userInfo.name || 'User'}</h4>
-                          <p className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>{userInfo.email}</p>
-                          <p className={`text-xs ${isDarkMode ? 'text-gray-500' : 'text-gray-400'}`}>ID: {userInfo.sub}</p>
-                          <p className={`text-xs ${isDarkMode ? 'text-gray-500' : 'text-gray-400'}`}>Prefix: {userInfo.userPrefix}</p>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-                </div>
-
-								{/* Theme */}
-                <div className={`border-b ${isDarkMode ? 'border-gray-700' : 'border-gray-200'} py-4`}>
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <h3 className={`text-lg font-medium ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>Theme</h3>
-                      <p className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>Select your preferred color scheme</p>
-                    </div>
-                    <div className="flex items-center space-x-3">
-                      <span className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>Light</span>
-                      <label className="relative inline-flex items-center cursor-pointer">
-                        <input
-                          type="checkbox"
-                          checked={isDarkMode}
-                          onChange={(e) => setTheme(e.target.checked ? 'dark' : 'light')}
-                          className="sr-only peer"
-                        />
-                        <div className={`w-11 h-6 ${isDarkMode ? 'bg-blue-600' : 'bg-gray-200'} rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all`}></div>
-                      </label>
-                      <span className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>Dark</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
 
           {/* Bot settings section */}
           {activeSection === 'bots' && (

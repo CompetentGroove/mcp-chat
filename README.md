@@ -116,7 +116,7 @@ y-gui/
 
 - `npm run dev`: Start both frontend and backend development servers
 - `npm run dev:frontend`: Start only the frontend development server
-- `npm run dev:backend`: Start only the backend development server
+- `npm run dev:backend`: Build the frontend and then start the backend development server
 - `npm run build`: Build both frontend and backend
 - `npm run deploy`: Deploy the backend to Cloudflare Workers
 - `npm run test`: Run tests

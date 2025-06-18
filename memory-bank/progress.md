@@ -17,7 +17,6 @@
 - SWR integration
 - Component styling
 - Responsive design with mobile and desktop layouts
-- Auth0 authentication integration
 
 ### Backend Implementation
 - Cloudflare Worker setup
@@ -34,14 +33,8 @@
 
 ## What's Left to Build
 
-### Authentication System
-- [x] Auth0 integration
-- [x] Google social login
-- [x] Token generation
-- [x] Session management
-- [x] Protected routes
-- [x] Authentication UI
-- [ ] Backend token validation
+### Access System
+- Authentication removed to allow open access
 
 ### Chat Enhancements
 - [ ] AI provider integration
@@ -98,16 +91,13 @@
     - Clean assistant messages (removing tool parameter parts)
     - Immediate response ending after tool detection
     - Direct tool execution after confirmation
-14. Auth0 authentication integration:
-    - React SDK integration
-    - Google social login
-    - Authenticated API utilities
-    - Component updates for Auth0
+14. Authentication removed:
+    - Login screen dropped
+    - All features accessible without login
 
 ### In Progress
-1. Backend Auth0 token validation
-2. Bot configuration editing
-3. Home page and chat history search
+1. Bot configuration editing
+2. Home page and chat history search
 
 ### Planned
 1. Bot and MCP server configuration editing
@@ -118,8 +108,7 @@
 
 ## Known Issues
 
-### Technical
-- Backend Auth0 token validation not implemented
+-### Technical
 - Loading states needed
 - Error handling incomplete
 - Performance optimization required
@@ -136,12 +125,11 @@
 ## Next Milestones
 
 ### Short Term
-1. Implement backend Auth0 token validation
-2. Implement bot and MCP server configuration editing
-3. Add chat catalog for multi-round messages
-4. Implement loading states
-5. Add error handling for message sending
-6. Optimize storage access
+1. Implement bot and MCP server configuration editing
+2. Add chat catalog for multi-round messages
+3. Implement loading states
+4. Add error handling for message sending
+5. Optimize storage access
 
 ### Medium Term
 1. Implement bot and MCP server configuration editing

@@ -4,7 +4,7 @@ import { BotD1Repository } from '../repository/d1/bot-d1-repository';
 import { corsHeaders } from '../middleware/cors';
 import { ProviderFactory } from '../providers/provider-factory';
 import { McpManager } from '../mcp/mcp-manager';
-import { ChatService } from '../serivce/chat';
+import { ChatService } from '../service/chat';
 import { createMessage } from 'src/utils/message';
 import { McpServerD1Repository } from 'src/repository/d1/mcp-server-d1-repository';
 import { IntegrationD1Repository } from '../repository/d1/integration-d1-repository';

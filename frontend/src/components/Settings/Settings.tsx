@@ -2,8 +2,6 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import { useTheme } from '../../contexts/ThemeContext';
 import { useAuthenticatedSWR } from '../../utils/api';
-import { BotSection } from './BotSection';
-import { McpServerSection } from './McpServerSection';
 import { IntegrationSection } from './IntegrationSection';
 
 interface SettingsProps {
@@ -14,10 +12,8 @@ export const Settings: React.FC<SettingsProps> = ({ }) => {
   const { section } = useParams<{ section: string }>();
   const { isDarkMode } = useTheme();
 
-  // Validate section parameter and default to 'bots' if invalid
-  const activeSection = (section === 'bots' || section === 'mcp-servers' || section === 'integrations')
-    ? section
-    : 'bots';
+  // Validate section parameter and default to 'integrations' if invalid
+  const activeSection = section === 'integrations' ? section : 'integrations';
 
   // Redirect if section is invalid
   useEffect(() => {
@@ -92,36 +88,6 @@ export const Settings: React.FC<SettingsProps> = ({ }) => {
               isDarkMode ? 'bg-gray-800 border border-gray-700' : 'bg-white border border-gray-200'
             }`}>
               <Link
-                to="/settings/bots"
-                onClick={() => setIsMobileMenuOpen(false)}
-                className={`block w-full text-left px-4 py-2 text-sm ${
-                  activeSection === 'bots'
-                    ? isDarkMode
-                      ? 'bg-gray-700 text-white'
-                      : 'bg-blue-50 text-blue-600'
-                    : isDarkMode
-                      ? 'text-gray-300 hover:bg-gray-700'
-                      : 'text-gray-700 hover:bg-gray-100'
-                }`}
-              >
-                Bots
-              </Link>
-              <Link
-                to="/settings/mcp-servers"
-                onClick={() => setIsMobileMenuOpen(false)}
-                className={`block w-full text-left px-4 py-2 text-sm ${
-                  activeSection === 'mcp-servers'
-                    ? isDarkMode
-                      ? 'bg-gray-700 text-white'
-                      : 'bg-blue-50 text-blue-600'
-                    : isDarkMode
-                      ? 'text-gray-300 hover:bg-gray-700'
-                      : 'text-gray-700 hover:bg-gray-100'
-                }`}
-              >
-                MCP Servers
-              </Link>
-              <Link
                 to="/settings/integrations"
                 onClick={() => setIsMobileMenuOpen(false)}
                 className={`block w-full text-left px-4 py-2 text-sm ${
@@ -160,38 +126,6 @@ export const Settings: React.FC<SettingsProps> = ({ }) => {
             <ul>
               <li className="mb-1">
                 <Link
-                  to="/settings/bots"
-                  className={`block w-full text-left px-3 py-2 rounded-md ${
-                    activeSection === 'bots'
-                      ? isDarkMode
-                        ? 'bg-gray-800 text-white font-medium'
-                        : 'bg-blue-50 text-blue-600 font-medium'
-                      : isDarkMode
-                        ? 'text-gray-300 hover:bg-gray-800'
-                        : 'text-gray-600 hover:bg-gray-100'
-                  }`}
-                >
-                  Bots
-                </Link>
-              </li>
-              <li className="mb-1">
-                <Link
-                  to="/settings/mcp-servers"
-                  className={`block w-full text-left px-3 py-2 rounded-md ${
-                    activeSection === 'mcp-servers'
-                      ? isDarkMode
-                        ? 'bg-gray-800 text-white font-medium'
-                        : 'bg-blue-50 text-blue-600 font-medium'
-                      : isDarkMode
-                        ? 'text-gray-300 hover:bg-gray-800'
-                        : 'text-gray-600 hover:bg-gray-100'
-                  }`}
-                >
-                  MCP Servers
-                </Link>
-              </li>
-              <li className="mb-1">
-                <Link
                   to="/settings/integrations"
                   className={`block w-full text-left px-3 py-2 rounded-md ${
                     activeSection === 'integrations'
@@ -213,21 +147,7 @@ export const Settings: React.FC<SettingsProps> = ({ }) => {
         {/* Main content */}
         <div className="flex-1 p-4 sm:p-8 overflow-y-auto">
 
-          {/* Bot settings section */}
-          {activeSection === 'bots' && (
-            <BotSection
-              isDarkMode={isDarkMode}
-              setStatusMessage={setStatusMessage}
-            />
-          )}
 
-          {/* MCP Servers settings section */}
-          {activeSection === 'mcp-servers' && (
-            <McpServerSection
-              isDarkMode={isDarkMode}
-              setStatusMessage={setStatusMessage}
-            />
-          )}
 
           {/* Integrations settings section */}
           {activeSection === 'integrations' && (

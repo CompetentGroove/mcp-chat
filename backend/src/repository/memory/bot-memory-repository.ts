@@ -17,6 +17,8 @@ export class BotMemoryRepository implements BotRepository {
           const parsed = JSON.parse(this.env.BOTS);
           if (Array.isArray(parsed)) {
             defaults = parsed as BotConfig[];
+          } else if (typeof parsed === 'object') {
+            defaults = Object.values(parsed) as BotConfig[];
           }
         } catch (err) {
           console.error('Failed to parse BOTS env:', err);

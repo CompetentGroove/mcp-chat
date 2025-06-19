@@ -61,7 +61,7 @@ export default function App() {
                 <Route path="/" element={<NewChatRedirect />} />
                 <Route path="/chat/:id" element={<ChatView />} />
                 <Route path="/share/:id" element={<ChatView />} />
-                <Route path="/settings" element={<Navigate to="/settings/bots" replace />} />
+                <Route path="/settings" element={<Navigate to="/settings/integrations" replace />} />
                 <Route path="/settings/:section" element={<Settings />} />
                 <Route path="/callback/:service" element={<OAuthCallback />} />
                 <Route path="*" element={<Navigate to="/" replace />} />

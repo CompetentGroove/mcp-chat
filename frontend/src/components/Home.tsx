@@ -1,9 +1,9 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useBot } from '../contexts/BotContext';
 import { useTheme } from '../contexts/ThemeContext';
 import { useApi } from '../utils/api';
 import MessageInput from './MessageInput';
+import { DEFAULT_BOT } from '../config';
 
 interface HomeProps {
 }
@@ -15,7 +15,6 @@ export default function Home({ }: HomeProps) {
 
   // New chat creation states
   const [newMessage, setNewMessage] = React.useState('');
-  const { selectedBot, setSelectedBot } = useBot();
   const [isCreatingChat, setIsCreatingChat] = React.useState(false);
   const [isProcessingMessage, setIsProcessingMessage] = React.useState(false);
 
@@ -23,8 +22,8 @@ export default function Home({ }: HomeProps) {
   const api = useApi();
 
   // Handle creating a new chat with a message
-  const handleNewChatWithMessage = async (content: string, botName: string) => {
-    if (!content.trim() || !botName) return;
+  const handleNewChatWithMessage = async (content: string) => {
+    if (!content.trim()) return;
 
     setIsCreatingChat(true);
 
@@ -37,7 +36,7 @@ export default function Home({ }: HomeProps) {
 
       // Store the message and bot in localStorage so ChatView can use it
       localStorage.setItem(`newChat_${id}_message`, content);
-      localStorage.setItem(`newChat_${id}_bot`, botName);
+      localStorage.setItem(`newChat_${id}_bot`, DEFAULT_BOT.name);
 
       // The ChatView component will detect this and handle the streaming
     } catch (error) {
@@ -60,17 +59,15 @@ export default function Home({ }: HomeProps) {
         {/* New Chat Input */}
 				<div className={`py-4`}>
 					{/* Assistant Avatar */}
-					<MessageInput
-						message={newMessage}
-						setMessage={setNewMessage}
-						selectedBot={selectedBot}
-						setSelectedBot={setSelectedBot}
-						isLoading={isCreatingChat || isProcessingMessage}
-						handleSubmit={async () => Promise.resolve()} // Not used since we're using onSendMessage
-						onSendMessage={handleNewChatWithMessage}
-						isFixed={false} // Don't fix this input to the bottom of the screen
-					/>
-				</div>
+                                        <MessageInput
+                                                message={newMessage}
+                                                setMessage={setNewMessage}
+                                                isLoading={isCreatingChat || isProcessingMessage}
+                                                handleSubmit={async () => Promise.resolve()} // Not used since we're using onSendMessage
+                                                onSendMessage={handleNewChatWithMessage}
+                                                isFixed={false} // Don't fix this input to the bottom of the screen
+                                        />
+                                </div>
 
       </main>
     </div>

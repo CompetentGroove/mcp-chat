@@ -11,17 +11,6 @@ export async function handleBotRequest(request: Request, env: Env, userPrefix?: 
   const botName = pathParts.length > 3 ? pathParts[3] : null;
 
   try {
-    // Get bot configurations
-    if (path === '/api/bots' && request.method === 'GET') {
-      const bots = await botRepo.getBots();
-      const publicBots = bots.map(({ name, model }) => ({ name, model }));
-      return new Response(JSON.stringify(publicBots), {
-        headers: {
-          'Content-Type': 'application/json',
-          ...corsHeaders
-        }
-      });
-    }
     // Add a new bot
     if (path === '/api/bot' && request.method === 'POST') {
       const botConfig: BotConfig = await request.json();

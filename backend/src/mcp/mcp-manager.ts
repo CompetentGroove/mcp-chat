@@ -1,6 +1,6 @@
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import { StreamableHTTPClientTransport } from "@modelcontextprotocol/sdk/client/streamableHttp.js";
-import { BotConfig, McpServerRepository, IntegrationRepository } from '../../../shared/types';
+import { BotConfig, McpServerRepository } from '../../../shared/types';
 import { writeMcpStatus } from '../utils/writer';
 
 /**
@@ -15,8 +15,7 @@ export class McpManager {
    * @param configRepo Repository for accessing MCP server configurations
    */
   constructor(
-    private mcpServerConfigRepository: McpServerRepository,
-    private integrationRepository: IntegrationRepository
+    private mcpServerConfigRepository: McpServerRepository
   ) {}
 
   /**
@@ -91,47 +90,7 @@ export class McpManager {
       // Get token from server configuration
       let token = server.token;
 
-      // Check if we have a tool name and should try to find an integration token
-      if (toolName) {
-        try {
-          const integrations = await this.integrationRepository.getIntegrations();
-          
-          for (const integration of integrations) {
-            // Check if integration name is a prefix of the tool name
-            if (toolName.startsWith(integration.name) && 
-                integration.connected) {
-              
-              // Log this match
-              console.log(`Using integration token for ${integration.name} when calling tool ${toolName}`);
-              
-              // Use the integration token instead
-              if (integration.auth_type === "api_key") {
-                token = integration.api_key;
-              } else if (integration.auth_type === "oauth") {
-                token = integration.credentials?.access_token;
-              }
-              break;
-            }
-          }
-        } catch (error) {
-          console.error("Error fetching integrations:", error);
-          // Continue with server token if there's an error with integrations
-        }
-      }
-
-      // Get all connected integrations for the header
-      let connectedIntegrations: string[] = [];
-      try {
-        const integrations = await this.integrationRepository.getIntegrations();
-        connectedIntegrations = integrations
-          .filter(integration => integration.connected)
-          .map(integration => integration.name);
-      } catch (error) {
-        console.error("Error fetching integrations for header:", error);
-        // Continue without the header if there's an error
-      }
-
-      // Create transport with token if available and add X-Integrations header
+      // Create transport with token if available
       const transportOptions: {
         requestInit: {
           headers: HeadersInit;
@@ -145,8 +104,7 @@ export class McpManager {
       } = {
         requestInit: {
           headers: {
-            ...(token ? { "Authorization": `Bearer ${token}` } : {}),
-            ...(connectedIntegrations.length > 0 ? { "X-Integrations": connectedIntegrations.join(',') } : {})
+            ...(token ? { "Authorization": `Bearer ${token}` } : {})
           }
         },
         reconnectionOptions: {

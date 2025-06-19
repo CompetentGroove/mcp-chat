@@ -2,7 +2,6 @@ import { corsHeaders } from '../middleware/cors';
 import { McpManager } from '../mcp/mcp-manager';
 import { BotMemoryRepository } from '../repository/memory/bot-memory-repository';
 import { McpServerMemoryRepository } from 'src/repository/memory/mcp-server-memory-repository';
-import { IntegrationMemoryRepository } from '../repository/memory/integration-memory-repository';
 import { Message } from '../../../shared/types';
 import { createMessage } from 'src/utils/message';
 import { Env } from 'worker-configuration';
@@ -40,8 +39,7 @@ export async function handleToolConfirmation(
     try {
       // Initialize repositories and MCP manager
       const mcpServerRepository = new McpServerMemoryRepository(env, userPrefix);
-      const integrationRepository = new IntegrationMemoryRepository(userPrefix);
-      const mcpManager = new McpManager(mcpServerRepository, integrationRepository);
+      const mcpManager = new McpManager(mcpServerRepository);
       
       // Get the bot config
       const botRepository = new BotMemoryRepository(env, userPrefix);

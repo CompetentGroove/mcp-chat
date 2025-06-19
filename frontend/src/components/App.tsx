@@ -1,9 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import ChatView from './ChatView/ChatView';
-import { Settings } from './Settings/Settings';
 import Header from './Header/Header';
-import { OAuthCallback } from './Callback/OAuthCallback';
 import { ThemeProvider } from '../contexts/ThemeContext';
 import { McpProvider } from '../contexts/McpContext';
 import { BotProvider } from '../contexts/BotContext';
@@ -61,9 +59,6 @@ export default function App() {
                 <Route path="/" element={<NewChatRedirect />} />
                 <Route path="/chat/:id" element={<ChatView />} />
                 <Route path="/share/:id" element={<ChatView />} />
-                <Route path="/settings" element={<Navigate to="/settings/integrations" replace />} />
-                <Route path="/settings/:section" element={<Settings />} />
-                <Route path="/callback/:service" element={<OAuthCallback />} />
                 <Route path="*" element={<Navigate to="/" replace />} />
               </Routes>
             </div>

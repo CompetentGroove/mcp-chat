@@ -3,8 +3,6 @@ import { swaggerUiHtml } from './ui';
 import { schemas } from './schemas';
 import { chatPaths } from './paths/chat';
 import { toolPaths } from './paths/tool';
-import { botPaths } from './paths/bot';
-import { mcpServerPaths } from './paths/mcp-server';
 
 // Handler for OpenAPI documentation endpoints
 export async function handleApiDocs(request: Request): Promise<Response> {
@@ -32,8 +30,6 @@ export async function handleApiDocs(request: Request): Promise<Response> {
       paths: {
         ...chatPaths,
         ...toolPaths,
-        ...botPaths,
-        ...mcpServerPaths,
       },
     };
 

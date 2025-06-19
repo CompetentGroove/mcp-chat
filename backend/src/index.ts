@@ -2,10 +2,8 @@ import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 import { Env } from './worker-configuration';
 import chatRouter from './api/chat-router';
-import botRouter from './api/bot-router';
 import shareRouter from './api/share-router';
 import toolRouter from './api/tool-router';
-import mcpServerRouter from './api/mcp-server-router';
 import { integrationRouter } from './api/integration';
 import { handleApiDocs } from './openapi';
 
@@ -48,11 +46,7 @@ app.use('/api/*', async (c, next) => {
 app.route('/api/share', shareRouter);
 app.route('/api/chats', chatRouter);
 app.route('/api/chat', chatRouter);
-app.route('/api/bots', botRouter);
-app.route('/api/bot', botRouter);
 app.route('/api/tool', toolRouter);
-app.route('/api/mcp-servers', mcpServerRouter);
-app.route('/api/mcp-server', mcpServerRouter);
 app.route('/api/integrations', integrationRouter);
 app.route('/api/integration', integrationRouter);
 

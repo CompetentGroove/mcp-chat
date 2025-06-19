@@ -1,5 +1,6 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 import { BotConfig } from '@shared/types';
+import { DEFAULT_BOT } from '../config';
 
 
 interface BotContextType {
@@ -12,26 +13,8 @@ interface BotContextType {
 const BotContext = createContext<BotContextType | undefined>(undefined);
 
 export function BotProvider({ children }: { children: React.ReactNode }) {
-  const [bots, setBots] = useState<BotConfig[]>([]);
-  const [selectedBot, setSelectedBot] = useState<string | undefined>(undefined);
-
-  useEffect(() => {
-    async function fetchBots() {
-      try {
-        const res = await fetch('/api/bots');
-        if (res.ok) {
-          const data = (await res.json()) as BotConfig[];
-          setBots(data);
-          if (!selectedBot && data.length > 0) {
-            setSelectedBot(data[0].name);
-          }
-        }
-      } catch (err) {
-        console.error('Failed to fetch bots', err);
-      }
-    }
-    fetchBots();
-  }, []);
+  const [bots, setBots] = useState<BotConfig[]>([DEFAULT_BOT]);
+  const [selectedBot, setSelectedBot] = useState<string | undefined>(DEFAULT_BOT.name);
 
   return (
     <BotContext.Provider value={{ bots, setBots, selectedBot, setSelectedBot }}>

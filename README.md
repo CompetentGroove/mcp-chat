@@ -1,6 +1,6 @@
 # y-gui 🚀
 
-A web-based graphical interface for AI chat interactions with support for multiple AI models and powerful MCP (Model Context Protocol) integrations. Beyond standard chat capabilities, y-gui leverages MCP to connect with Gmail, Google Calendar, image generation services, and more.
+A web-based graphical interface for AI chat interactions with support for multiple AI models.
 
 Check out [y-cli](https://github.com/luohy15/y-cli) for a CLI version.
 
@@ -9,19 +9,15 @@ Check out [y-cli](https://github.com/luohy15/y-cli) for a CLI version.
 ![demo](https://cdn.luohy15.com/y-gui-demo-4.png)
 
 ### MCP in Action
-See how y-gui uses MCP integrations to extend AI capabilities:
+See how y-gui uses MCP servers to extend AI capabilities:
 
-- [Gmail Integration](https://yovy.app/share/053b3990) - Access and manage emails directly through the chat interface
-- [Google Calendar Integration](https://yovy.app/share/fd8e60b5) - Create and manage calendar events via natural language
 - [Image Generation](https://yovy.app/share/0e36ad05) - Generate images directly within your chat conversation
 
 ## ✨ Features
 
 - 💬 Interactive chat interface with AI models
 - 🤖 Support for multiple bot configurations (any base_url/api_key/model combination)
-- 🔗 Comprehensive MCP (Model Context Protocol) integration system with:
-  - 📧 Gmail access and management
-  - 📅 Google Calendar integration for event scheduling
+- 🔗 Support for MCP (Model Context Protocol) servers with:
   - 🖼️ Image generation capabilities
   - 🧩 Expandable framework for additional MCP servers and tools
 - 🌓 Dark/light theme support
@@ -158,7 +154,7 @@ MCP (Model Context Protocol) servers can be configured with simple:
 - **URL**: For remotely hosted MCP services
  - **Token**: API token for server access
 
-Current MCP integrations include Gmail, Google Calendar, image generation, and support for custom servers to connect with virtually any API or service.
+Current MCP servers can include image generation and custom services to connect with virtually any API or service.
 
 ## 🌐 API Endpoints
 
@@ -172,13 +168,13 @@ The backend provides RESTful API endpoints for:
 
 - Chat data is stored in memory (not persisted)
 - Bot and MCP server configurations are stored in browser localStorage
-- MCP integration data is securely managed through authorized API connections
+- MCP server data is securely managed through authorized API connections
 
 ## 🧩 Technologies Used
 
 - **Frontend**: React, TypeScript, Tailwind CSS, SWR
 - **Backend**: Cloudflare Workers with in-memory storage
-- **Integrations**: MCP servers, OAuth2, Gmail API, Google Calendar API, Image Generation APIs
+- **Integrations**: MCP servers and image generation APIs
 - **Build Tools**: Vite, Wrangler, TypeScript
 
 ## 📚 Documentation

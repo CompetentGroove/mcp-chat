@@ -7,7 +7,6 @@ import { McpManager } from '../mcp/mcp-manager';
 import { ChatService } from '../service/chat';
 import { createMessage } from 'src/utils/message';
 import { McpServerMemoryRepository } from 'src/repository/memory/mcp-server-memory-repository';
-import { IntegrationMemoryRepository } from '../repository/memory/integration-memory-repository';
 import { Env } from 'worker-configuration';
 import type { ExecutionContext } from 'hono/dist/types/context';
 
@@ -51,7 +50,6 @@ export async function handleChatCompletions(
       // Get the bot config
       const botRepository = new BotMemoryRepository(env, userPrefix);
       const mcpServerRepository = new McpServerMemoryRepository(env, userPrefix);
-      const integrationRepository = new IntegrationMemoryRepository(userPrefix);
       const bots = await botRepository.getBots();
       const botConfig = bots.find(bot => bot.name === botName);
       if (!botConfig) {
@@ -76,7 +74,7 @@ export async function handleChatCompletions(
       const provider = ProviderFactory.createProvider(resultBotConfig);
 
       // Get the MCP manager
-      const mcpManager = new McpManager(mcpServerRepository, integrationRepository);
+      const mcpManager = new McpManager(mcpServerRepository);
 
       // Create the chat service
       const chatService = new ChatService(chatRepository, provider, mcpManager, chatId, resultBotConfig);

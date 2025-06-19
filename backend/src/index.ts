@@ -4,7 +4,6 @@ import { Env } from './worker-configuration';
 import chatRouter from './api/chat-router';
 import shareRouter from './api/share-router';
 import toolRouter from './api/tool-router';
-import { integrationRouter } from './api/integration';
 import { handleApiDocs } from './openapi';
 
 // Create the main Hono app with the Variables type
@@ -47,8 +46,6 @@ app.route('/api/share', shareRouter);
 app.route('/api/chats', chatRouter);
 app.route('/api/chat', chatRouter);
 app.route('/api/tool', toolRouter);
-app.route('/api/integrations', integrationRouter);
-app.route('/api/integration', integrationRouter);
 
 // For non-API routes, serve static assets
 app.all('*', async (c) => {
@@ -61,28 +58,8 @@ app.all('*', async (c) => {
   return c.env.ASSETS.fetch(request);
 });
 
-// Import the token refresh utility and storage utility
-import { checkAndRefreshTokens } from './utils/token-refresh';
-
-// Export both the fetch handler and scheduled handler
+// Export the fetch handler
 export default {
   // Fetch handler (HTTP requests)
-  fetch: app.fetch,
-
-  // Scheduled task handler for token refresh
-  async scheduled(event: ScheduledEvent, env: Env, ctx: ExecutionContext) {
-    console.log('Running scheduled token refresh task at:', new Date().toISOString());
-
-    try {
-      // First, check the default user space (no prefix)
-      await checkAndRefreshTokens(env, '');
-
-      // Only refresh tokens in the default user space
-      await checkAndRefreshTokens(env, 'default');
-
-      console.log('Token refresh task completed successfully');
-    } catch (error) {
-      console.error('Error in scheduled token refresh task:', error);
-    }
-  }
+  fetch: app.fetch
 };

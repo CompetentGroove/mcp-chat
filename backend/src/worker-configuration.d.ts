@@ -6,10 +6,6 @@ export interface Env {
     OPENROUTER_BASE_URL: string;
     OPENROUTER_FREE_KEY: string;
     MCP_SERVER_URL: string;
-    GOOGLE_CLIENT_ID: string;
-    GOOGLE_CLIENT_SECRET: string;
-    GOOGLE_CLENDAR_REDIRECT_URI: string;
-    GOOGLE_GMAIL_REDIRECT_URI: string;
     API_TIMEOUT_MS: string;
     BOTS: string;
     MCP_SERVERS: string;

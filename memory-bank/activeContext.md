@@ -6,14 +6,14 @@ Enhancing the web-based GUI for chat interactions with bot configuration and MCP
 ## Recent Changes
 1. Project structure established with React, TypeScript, and Cloudflare Workers
 2. Basic components created (App, Home, ChatView)
-3. Cloudflare Worker implementation for R2 access
+3. Cloudflare Worker implementation for in-memory access
 4. Initial API endpoints for chat operations
 5. SWR integration for data fetching
 6. Tailwind CSS setup for styling
 7. Bot configuration UI implemented in Settings component
 8. MCP server configuration UI implemented in Settings component
 9. Chat interface with message display and metadata
-10. Bot and MCP server configuration fetching from Cloudflare R2
+10. Bot and MCP server configuration stored in browser localStorage
 11. API endpoints for configuration management
 12. JSONL format for configuration storage
 13. Basic chat conversation function
@@ -55,7 +55,8 @@ Authentication has been removed. All features are accessible without login.
 - MCP server configuration
 
 ### Storage
-- R2 for chat data storage
+- In-memory chat storage (cleared on refresh)
+- Browser localStorage for bot and MCP configs
 - Data synchronization
 - Access patterns
 - Performance optimization

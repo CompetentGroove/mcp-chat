@@ -26,6 +26,7 @@ See how y-gui uses MCP integrations to extend AI capabilities:
   - 🧩 Expandable framework for additional MCP servers and tools
 - 🌓 Dark/light theme support
 - 📝 Chat data stored in memory (cleared on refresh)
+- 💾 Bot and MCP server configs saved in browser localStorage
 - 🔄 Real-time updates with SWR
 - 📱 Responsive design for all devices
 
@@ -170,7 +171,7 @@ The backend provides RESTful API endpoints for:
 ## 🔄 Data Storage
 
 - Chat data is stored in memory (not persisted)
-- Bot and MCP server configurations are stored in memory
+- Bot and MCP server configurations are stored in browser localStorage
 - MCP integration data is securely managed through authorized API connections
 
 ## 🧩 Technologies Used

@@ -1,7 +1,6 @@
 import React, { KeyboardEvent, useState, useRef, useEffect } from 'react';
 import { useTheme } from '../contexts/ThemeContext';
-import { useAuthenticatedSWR } from '../utils/api';
-import { BotConfig } from '@shared/types';
+import { useBot } from '../contexts/BotContext';
 
 interface MessageInputProps {
   message: string;
@@ -28,10 +27,8 @@ export default function MessageInput({
 }: MessageInputProps) {
   const { isDarkMode } = useTheme();
 
-  // Fetch bots data internally using authenticated SWR
-  const { data: botsData } = useAuthenticatedSWR<BotConfig[]>('/api/bots');
-
-  const bots = botsData || [];
+  // Get bots from context (stored in localStorage)
+  const { bots } = useBot();
 
   // Set default bot to first in the array if not already selected
   // Or load from localStorage if available

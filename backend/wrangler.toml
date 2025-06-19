@@ -11,10 +11,6 @@ directory = "../frontend/dist"
 binding = "ASSETS"
 not_found_handling = "single-page-application"
 
-[[r2_buckets]]
-binding = "CHAT_R2"
-bucket_name = "mcp"
-preview_bucket_name = "mcp"
 
 [[kv_namespaces]]
 binding = "USER_KV"

@@ -69,7 +69,6 @@ app.all('*', async (c) => {
 
 // Import the token refresh utility and storage utility
 import { checkAndRefreshTokens } from './utils/token-refresh';
-import { listUserPrefixes } from './utils/storage';
 
 // Export both the fetch handler and scheduled handler
 export default {
@@ -84,15 +83,8 @@ export default {
       // First, check the default user space (no prefix)
       await checkAndRefreshTokens(env, '');
 
-      // Then get all user prefixes from storage and refresh tokens for each user
-      const userPrefixes = await listUserPrefixes(env.CHAT_R2);
-      console.log(`Found ${userPrefixes.length} user prefixes to process`);
-
-      // Process each user's integrations
-      for (const userPrefix of userPrefixes) {
-        console.log(`Processing integrations for user prefix: ${userPrefix}`);
-        await checkAndRefreshTokens(env, userPrefix);
-      }
+      // Only refresh tokens in the default user space
+      await checkAndRefreshTokens(env, 'default');
 
       console.log('Token refresh task completed successfully');
     } catch (error) {

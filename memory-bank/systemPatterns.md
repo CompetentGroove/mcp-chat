@@ -6,7 +6,7 @@
 ```mermaid
 flowchart TD
     Client[React Client] --> Worker[Cloudflare Worker]
-    Worker --> R2[Cloudflare R2]
+    Worker --> Memory[In-Memory Storage]
     Worker --> AI[AI Providers]
 
     subgraph "Frontend"
@@ -26,9 +26,9 @@ flowchart TD
 
 ### Repository Pattern
 - Implemented in ChatRepository
-- Handles data operations with Cloudflare R2
+- Handles data operations in memory
 - Provides consistent interface for data access
-- Manages chat data persistence and retrieval
+- Manages chat data persistence during runtime
 
 ### Component Pattern
 - React functional components with hooks
@@ -76,7 +76,7 @@ flowchart LR
     Router --> Config[Configuration Layer]
 
     subgraph "Storage"
-        Storage --> R2[R2 Operations]
+        Storage --> Memory[In-Memory]
     end
 
     subgraph "Configuration"
@@ -95,9 +95,9 @@ flowchart LR
 - Context API for theme management
 - Configuration-driven bot and MCP server management
 
-### Backend Structure
+-### Backend Structure
 - Cloudflare Workers
-- R2 for storage
+- In-memory storage
 - Middleware pattern for request handling
 - RESTful API design
 

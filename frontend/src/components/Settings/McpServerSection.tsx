@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { McpServerConfig } from '../../../../shared/types';
-import { useAuthenticatedSWR, useApi } from '../../utils/api';
+import { getMcpServers, saveMcpServers } from '../../utils/storage';
 import { McpServerFormModal } from './McpServerForm';
 import { ConfirmationDialog } from './Confirm';
 import { ActionMenu } from './ActionMenu';
@@ -27,33 +27,33 @@ export const McpServerSection: React.FC<McpServerSectionProps> = ({
   const [actionMenuServer, setActionMenuServer] = useState<string | null>(null);
   const actionMenuRef = useRef<HTMLDivElement>(null);
 
-  // API functions
-  const api = useApi();
-
   // Get MCP context
   const mcpContext = useMcp();
 
-  // Fetch configurations using authenticated SWR
-  const { data: mcpServers, error: mcpError, isLoading: mcpLoading, mutate: mutateMcpServers } =
-    useAuthenticatedSWR<McpServerConfig[]>('/api/mcp-servers');
+  const [mcpServers, setMcpServers] = useState<McpServerConfig[]>([]);
+
+  useEffect(() => {
+    setMcpServers(getMcpServers());
+  }, []);
 
   // Handle MCP server form submission
   const handleMcpServerSubmit = async (server: McpServerConfig) => {
     try {
+      const updated = [...mcpServers];
       if (selectedServer) {
-        // Update existing server
-        await api.put(`/api/mcp-server/${selectedServer.name}`, server);
+        const idx = updated.findIndex(s => s.name === selectedServer.name);
+        if (idx !== -1) {
+          updated[idx] = server;
+        }
         setStatusMessage({ type: 'success', text: `MCP server "${server.name}" updated successfully` });
       } else {
-        // Add new server
-        await api.post('/api/mcp-server', server);
+        updated.push(server);
         setStatusMessage({ type: 'success', text: `MCP server "${server.name}" added successfully` });
       }
-
-      // Close the form and refresh the server list
+      setMcpServers(updated);
+      saveMcpServers(updated);
       setIsMcpServerFormOpen(false);
       setSelectedServer(undefined);
-      mutateMcpServers();
     } catch (error) {
       console.error('Error saving MCP server:', error);
       setStatusMessage({ type: 'error', text: `Failed to save MCP server: ${error instanceof Error ? error.message : 'Unknown error'}` });
@@ -65,9 +65,10 @@ export const McpServerSection: React.FC<McpServerSectionProps> = ({
     if (!serverToDelete) return;
 
     try {
-      await api.delete(`/api/mcp-server/${serverToDelete}`);
+      const updated = mcpServers.filter(s => s.name !== serverToDelete);
+      setMcpServers(updated);
+      saveMcpServers(updated);
       setStatusMessage({ type: 'success', text: `MCP server deleted successfully` });
-      mutateMcpServers();
     } catch (error) {
       console.error('Error deleting MCP server:', error);
       setStatusMessage({ type: 'error', text: `Failed to delete MCP server: ${error instanceof Error ? error.message : 'Unknown error'}` });
@@ -150,21 +151,7 @@ export const McpServerSection: React.FC<McpServerSectionProps> = ({
       </div>
 
       <div className={`${isDarkMode ? 'bg-[#1a1a1a] border-gray-700' : 'bg-white border-gray-200'} border rounded-lg overflow-hidden`}>
-        {mcpLoading ? (
-          <div className="p-4 text-center">
-            <div className={`animate-pulse ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>Loading MCP server configurations...</div>
-          </div>
-        ) : mcpError ? (
-          <div className="p-4 text-center">
-            <div className="text-red-500">Error loading MCP server configurations</div>
-            <button
-              onClick={() => window.location.reload()}
-              className="mt-2 text-sm text-blue-500 hover:underline"
-            >
-              Try again
-            </button>
-          </div>
-        ) : mcpServers && mcpServers.length > 0 ? (
+        {mcpServers && mcpServers.length > 0 ? (
           mcpServers.map((server, index) => (
           <div key={server.name} className={`${index !== mcpServers.length - 1 ? isDarkMode ? 'border-b border-gray-700' : 'border-b border-gray-200' : ''} p-4`}>
             <div className="flex justify-between items-center">

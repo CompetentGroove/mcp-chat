@@ -13,7 +13,7 @@
 
 ### Backend Technologies
 - Cloudflare Workers
-- Cloudflare R2
+- In-memory storage
 - Web Crypto API
 
 ### Development Tools
@@ -87,9 +87,9 @@ y-gui/
 
 ## Technical Constraints
 
-### Performance
+-### Performance
 - Edge computing limitations
-- R2 access patterns
+- In-memory access patterns
 - Network latency handling
 - Bundle size optimization
 - Client-side caching
@@ -118,14 +118,12 @@ y-gui/
 
 ### External Services
 - Cloudflare Workers
-- Cloudflare R2
 - AI providers
 
 ## Configuration Management
 
 ### Cloudflare Configuration
 - Worker settings
-- R2 bucket bindings
 - Environment variables
 - Deployment settings
 
@@ -192,7 +190,6 @@ y-gui/
 ### Worker Deployment
 - Wrangler configuration
 - Environment setup
-- R2 bindings
 - Route configuration
 - Error handling
 

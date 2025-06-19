@@ -4,7 +4,8 @@ import { useTheme } from '../../contexts/ThemeContext';
 import { useBot } from '../../contexts/BotContext';
 import { useToc } from '../../contexts/TocContext';
 import { useMcp } from '../../contexts/McpContext';
-import { useAuthenticatedSWR, useApi } from '../../utils/api';
+import { useApi } from '../../utils/api';
+import { getMcpServers } from '../../utils/storage';
 import { Chat, Message, McpServerConfig } from '@shared/types';
 import { mutate } from 'swr';
 import useSWR, { SWRConfiguration } from 'swr';
@@ -114,10 +115,13 @@ export default function ChatView() {
         swrConfig
       );
 
-  // Only fetch MCP servers in regular mode
-  const { data: mcpServers } = !isSharedMode
-    ? useAuthenticatedSWR<McpServerConfig[]>('/api/mcp-servers', swrConfig)
-    : { data: undefined };
+  // Load MCP servers from localStorage in regular mode
+  const [mcpServers, setMcpServers] = useState<McpServerConfig[] | undefined>(undefined);
+  useEffect(() => {
+    if (!isSharedMode) {
+      setMcpServers(getMcpServers());
+    }
+  }, [isSharedMode]);
 
   // Debug selectedBot changes
   useEffect(() => {

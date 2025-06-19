@@ -14,8 +14,13 @@ export async function handleMcpServerRequest(request: Request, env: Env, userPre
     // Get MCP server configurations
     if (path === '/api/mcp-servers' && request.method === 'GET') {
       const servers = await mcpRepo.getMcpServers();
-      return new Response(JSON.stringify(servers), {
-        headers: { 
+      const publicServers = servers.map(({ name, url, need_confirm }) => ({
+        name,
+        url,
+        need_confirm
+      }));
+      return new Response(JSON.stringify(publicServers), {
+        headers: {
           'Content-Type': 'application/json',
           ...corsHeaders
         }

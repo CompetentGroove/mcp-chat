@@ -17,6 +17,8 @@ export class McpServerMemoryRepository implements McpServerRepository {
           const parsed = JSON.parse(this.env.MCP_SERVERS);
           if (Array.isArray(parsed)) {
             defaults = parsed as McpServerConfig[];
+          } else if (typeof parsed === 'object') {
+            defaults = Object.values(parsed) as McpServerConfig[];
           }
         } catch (err) {
           console.error('Failed to parse MCP_SERVERS env:', err);

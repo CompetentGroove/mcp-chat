@@ -111,7 +111,7 @@ const Header: React.FC = () => {
 						</svg>
 					</button>
                                         <button
-                                                onClick={() => navigate('/settings/bots')}
+                                                onClick={() => navigate('/settings/integrations')}
                                                 className={`${isDarkMode ? 'text-gray-400 hover:text-white hover:bg-gray-800' : 'text-gray-500 hover:text-gray-700 hover:bg-gray-100'} p-2 rounded-full transition-colors flex items-center`}
                                                 aria-label="Settings"
                                         >

@@ -14,8 +14,9 @@ export async function handleBotRequest(request: Request, env: Env, userPrefix?: 
     // Get bot configurations
     if (path === '/api/bots' && request.method === 'GET') {
       const bots = await botRepo.getBots();
-      return new Response(JSON.stringify(bots), {
-        headers: { 
+      const publicBots = bots.map(({ name, model }) => ({ name, model }));
+      return new Response(JSON.stringify(publicBots), {
+        headers: {
           'Content-Type': 'application/json',
           ...corsHeaders
         }

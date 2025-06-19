@@ -4,7 +4,7 @@ import { useTheme } from '../../contexts/ThemeContext';
 import { useBot } from '../../contexts/BotContext';
 import { useToc } from '../../contexts/TocContext';
 import { useMcp } from '../../contexts/McpContext';
-import { useApi } from '../../utils/api';
+import { useApi, useAuthenticatedSWR } from '../../utils/api';
 import { getMcpServers } from '../../utils/storage';
 import { Chat, Message, McpServerConfig } from '@shared/types';
 import { mutate } from 'swr';

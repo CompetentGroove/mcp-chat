@@ -123,6 +123,7 @@ export class ChatService {
           provider = chunk.provider;
         }
         await writer.write(encoder.encode(`data: ${JSON.stringify(responseChunk)}\n\n`));
+        console.log('Stream chunk:', responseChunk);
       }
 
       // Check if any content was received before proceeding
@@ -144,10 +145,11 @@ export class ChatService {
       });
       await this.processAssistantMessage(assistantMessage, writer);
       await this.storage.saveChat(this.chat);
+      console.log('Chat saved with', this.chat.messages.length, 'messages');
     } catch (error: unknown) {
       console.error('Error in processUserMessage:', error);
       await this.handleError(error, userMessage, writer);
-    } 
+    }
     // No longer closing the writer here - letting the caller handle it
   }
 

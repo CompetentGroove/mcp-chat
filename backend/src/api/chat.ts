@@ -5,11 +5,19 @@ import { handleChatCompletions } from './chat-completions';
 import { handleSelectResponse } from './chat-select';
 import { generateUniqueId } from '../utils/chat';
 import { Env } from 'worker-configuration';
+import type { ExecutionContext } from 'hono/dist/types/context';
 
-export async function handleChatsRequest(request: Request, env: Env, userPrefix?: string): Promise<Response> {
+export async function handleChatsRequest(
+  request: Request,
+  env: Env,
+  userPrefix?: string,
+  ctx?: ExecutionContext
+): Promise<Response> {
   const chatRepository = new ChatMemoryRepository(userPrefix);
   const url = new URL(request.url);
   const path = url.pathname;
+
+  console.log('handleChatsRequest:', path, request.method);
 
   try {
     // List chats
@@ -81,7 +89,7 @@ export async function handleChatsRequest(request: Request, env: Env, userPrefix?
 
     // Send message to chat (completions endpoint)
     if (path === '/api/chat/completions' && request.method === 'POST') {
-      return handleChatCompletions(request, env, userPrefix);
+      return handleChatCompletions(request, env, userPrefix, ctx);
     }
 
     if (path === '/api/chat/select-response' && request.method === 'POST') {

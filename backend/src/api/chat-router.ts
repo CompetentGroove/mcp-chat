@@ -18,7 +18,7 @@ router.all('*', async (c) => {
     body: c.req.raw.body
   });
   
-  return handleChatsRequest(request, c.env, c.get('userPrefix'));
+  return handleChatsRequest(request, c.env, c.get('userPrefix'), c.executionCtx);
 });
 
 export default router;

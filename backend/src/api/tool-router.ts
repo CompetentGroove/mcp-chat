@@ -18,7 +18,7 @@ router.all('*', async (c) => {
     body: c.req.raw.body
   });
   
-  return handleToolConfirmation(request, c.env, c.get('userPrefix'));
+  return handleToolConfirmation(request, c.env, c.get('userPrefix'), c.executionCtx);
 });
 
 export default router;

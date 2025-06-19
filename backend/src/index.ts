@@ -24,8 +24,8 @@ app.use('*', cors({
   maxAge: 86400,
 }));
 
-// Public endpoints don't require authentication
-app.get('/api/docs/*', (c) => {
+// Public endpoint for OpenAPI spec
+app.get('/api/docs/openapi.json', (c) => {
   // Convert Hono request to standard Request for the existing handler
   const request = new Request(c.req.url, {
     method: c.req.method,

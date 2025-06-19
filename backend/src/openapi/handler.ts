@@ -1,5 +1,4 @@
 import { corsHeaders } from '../middleware/cors';
-import { swaggerUiHtml } from './ui';
 import { schemas } from './schemas';
 import { chatPaths } from './paths/chat';
 import { toolPaths } from './paths/tool';
@@ -36,15 +35,6 @@ export async function handleApiDocs(request: Request): Promise<Response> {
     return new Response(JSON.stringify(openApiSpec), {
       headers: {
         'Content-Type': 'application/json',
-        ...corsHeaders,
-      },
-    });
-  }
-
-  if (path === '/api/docs' && request.method === 'GET') {
-    return new Response(swaggerUiHtml, {
-      headers: {
-        'Content-Type': 'text/html',
         ...corsHeaders,
       },
     });

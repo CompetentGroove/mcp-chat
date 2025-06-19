@@ -33,7 +33,9 @@ export default function ChatView() {
   const isSharedMode = location.pathname.startsWith('/share/');
 
   // State for message input and bot selection
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState(
+    'what is the attendance between 01 april 2024 and 30 april 2024'
+  );
   const { selectedBot, setSelectedBot } = useBot();
 
   // Message streaming state
@@ -440,6 +442,7 @@ export default function ChatView() {
     // Create a new AbortController for this request
     abortControllerRef.current = new AbortController();
     const signal = abortControllerRef.current.signal;
+    let fullResponse = '';
 
     try {
       // Make the API request
@@ -453,6 +456,8 @@ export default function ChatView() {
       });
 
       if (!response.ok) {
+        const errorText = await response.text();
+        console.error('Streaming request failed:', response.status, errorText);
         throw new Error(`Error sending message: ${response.statusText}`);
       }
 
@@ -477,8 +482,8 @@ export default function ChatView() {
 
           for (let i = 0; i < lines.length - 1; i++) {
             const line = lines[i];
-            if (line.startsWith('data: ')) {
-              const data = line.slice(6);
+            if (line.startsWith('data:')) {
+              const data = line.replace(/^data:\s*/, '').trim();
 
               if (data === '[DONE]') {
                 reader.cancel();
@@ -506,7 +511,9 @@ export default function ChatView() {
                 }
                 // Handle content chunks
                 else if (parsedData.choices?.[0]?.delta?.content) {
-                  await updateLastMessageChunk(parsedData.choices[0].delta.content);
+                  const chunk = parsedData.choices[0].delta.content;
+                  fullResponse += chunk;
+                  await updateLastMessageChunk(chunk);
                 }
 
                 // Set model and provider info
@@ -534,7 +541,7 @@ export default function ChatView() {
                   await handleToolResult(parsedData.content || '', parsedData.server || '');
                 }
               } catch (e) {
-                console.error('Error parsing SSE data:', e);
+                console.error('Error parsing SSE data for line:', line, e);
               }
             }
           }
@@ -542,7 +549,8 @@ export default function ChatView() {
           buffer = lines[lines.length - 1];
         }
       }
-			mutate(`/api/chats/${id}`);
+      console.log('Assistant response:', fullResponse);
+      mutate(`/api/chats/${id}`);
     } catch (error) {
       console.error('Error streaming response:', error);
     } finally {
@@ -555,8 +563,13 @@ export default function ChatView() {
    ****************************/
 
   // Send a user message and get response
-  const sendUserMessage = async (content: string, additionalProps: Partial<Message> = {}) => {
+  const sendUserMessage = async (
+    content: string,
+    additionalProps: Partial<Message> = {}
+  ) => {
     if (!id || !selectedBot) return;
+
+    console.log('User question:', content);
 
     await addMessageToChat(content, 'user', additionalProps);
     await addMessageToChat('', 'assistant');

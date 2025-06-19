@@ -9,12 +9,18 @@ import { createMessage } from 'src/utils/message';
 import { McpServerMemoryRepository } from 'src/repository/memory/mcp-server-memory-repository';
 import { IntegrationMemoryRepository } from '../repository/memory/integration-memory-repository';
 import { Env } from 'worker-configuration';
+import type { ExecutionContext } from 'hono/dist/types/context';
 
 /**
  * Handle the chat completions endpoint
  * This function processes requests to send messages to a chat and get AI responses
  */
-export async function handleChatCompletions(request: Request, env: Env, userPrefix?: string): Promise<Response> {
+export async function handleChatCompletions(
+  request: Request,
+  env: Env,
+  userPrefix?: string,
+  ctx?: ExecutionContext
+): Promise<Response> {
   // Get message data from request
   interface CompletionRequest {
     content: string;
@@ -26,11 +32,15 @@ export async function handleChatCompletions(request: Request, env: Env, userPref
   const completionData = await request.json() as CompletionRequest;
   const { content, botName, chatId, userMessageId } = completionData;
 
+  console.log('Completion request payload:', completionData);
+
   const { readable, writable } = new TransformStream();
   const writer = writable.getWriter();
   const encoder = new TextEncoder();
 
-  (async () => {
+  console.log('Starting chat completion for chat', chatId);
+
+  const task = (async () => {
     try {
       console.log('User prefix:', userPrefix);
       // Get or create the chat
@@ -43,7 +53,9 @@ export async function handleChatCompletions(request: Request, env: Env, userPref
       const bots = await botRepository.getBots();
       const botConfig = bots.find(bot => bot.name === botName);
       if (!botConfig) {
-        return new Response('Bot not found', { status: 404, headers: corsHeaders });
+        await writer.write(encoder.encode(`data: {"error": "Bot not found"}\n\n`));
+        await writer.close();
+        return;
       }
       let resultBotConfig = botConfig;
       if (!resultBotConfig.api_key || !resultBotConfig.base_url) {
@@ -101,6 +113,7 @@ export async function handleChatCompletions(request: Request, env: Env, userPref
       // Close the writer
       await writer.write(encoder.encode(`data: [DONE]\n\n`));
       await writer.close();
+      console.log('Completed streaming for chat', chatId);
     } catch (error: unknown) {
       console.error('Error processing stream:', error);
       const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
@@ -108,6 +121,8 @@ export async function handleChatCompletions(request: Request, env: Env, userPref
       await writer.close();
     }
   })();
+
+  ctx?.waitUntil(task);
   
   // Return the streaming response
   return new Response(readable, {

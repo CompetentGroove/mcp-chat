@@ -6,13 +6,19 @@ import { IntegrationMemoryRepository } from '../repository/memory/integration-me
 import { Message } from '../../../shared/types';
 import { createMessage } from 'src/utils/message';
 import { Env } from 'worker-configuration';
+import type { ExecutionContext } from 'hono/dist/types/context';
 
 /**
  * Handle tool execution confirmation
  * This endpoint allows clients to confirm or cancel tool execution
  * and directly executes the tool if confirmed
  */
-export async function handleToolConfirmation(request: Request, env: Env, userPrefix?: string): Promise<Response> {
+export async function handleToolConfirmation(
+  request: Request,
+  env: Env,
+  userPrefix?: string,
+  ctx?: ExecutionContext
+): Promise<Response> {
   // Parse request body
   interface ConfirmationRequest {
     botName: string;
@@ -24,11 +30,13 @@ export async function handleToolConfirmation(request: Request, env: Env, userPre
   const confirmationData = await request.json() as ConfirmationRequest;
   const { botName, server, tool, args } = confirmationData;
 
+  console.log('Tool confirmation payload:', confirmationData);
+
   const { readable, writable } = new TransformStream();
   const writer = writable.getWriter();
   const encoder = new TextEncoder();
   
-  (async () => {
+  const task = (async () => {
     try {
       // Initialize repositories and MCP manager
       const mcpServerRepository = new McpServerMemoryRepository(env, userPrefix);
@@ -40,7 +48,9 @@ export async function handleToolConfirmation(request: Request, env: Env, userPre
       const bots = await botRepository.getBots();
       const botConfig = bots.find(bot => bot.name === botName);
       if (!botConfig) {
-        return new Response('Bot not found', { status: 404, headers: corsHeaders });
+        await writer.write(encoder.encode(`data: {"error": "Bot not found"}\n\n`));
+        await writer.close();
+        return;
       }
 
       // Execute the tool directly
@@ -59,11 +69,14 @@ export async function handleToolConfirmation(request: Request, env: Env, userPre
       // Close the writer
       await writer.write(encoder.encode(`data: [DONE]\n\n`));
       await writer.close();
+      console.log('Completed tool stream for', server, tool);
     } catch (error) {
       console.error('Error processing stream:', error);
       writer.abort(error);
     }
   })();
+
+  ctx?.waitUntil(task);
   
   // Return the streaming response
   return new Response(readable, {

@@ -58,19 +58,19 @@ export default function MessageItem({
 			{/* Message metadata */}
 			<div className="flex flex-col sm:flex-row sm:items-center mb-2 space-y-2 sm:space-y-0">
 				<div className="flex flex-col sm:flex-row sm:items-center space-y-1 sm:space-y-0 sm:space-x-2">
-					<span className="text-sm font-medium">{isUserMessage ? 'You' : 'Assistant'}</span>
+                                        <span className="text-sm font-medium">{isUserMessage ? 'You' : 'UrvaShe'}</span>
 					<span className="text-xs opacity-75">
 						{new Date(message.timestamp).toLocaleString()}
 					</span>
 					<div className="flex flex-wrap items-center gap-1">
-						{message.model && (
-							<span className={`px-2 py-0.5 rounded text-xs font-medium ${isUserMessage
-									? 'bg-blue-400 text-white'
-									: isDarkMode ? 'bg-purple-900 text-purple-100' : 'bg-purple-100 text-purple-800'
-								}`}>
-								{message.model}
-							</span>
-						)}
+                                                {message.model && message.model.toLowerCase() !== 'deepseek-r1:7b' && (
+                                                        <span className={`px-2 py-0.5 rounded text-xs font-medium ${isUserMessage
+                                                                        ? 'bg-blue-400 text-white'
+                                                                        : isDarkMode ? 'bg-purple-900 text-purple-100' : 'bg-purple-100 text-purple-800'
+                                                                }`}>
+                                                                {message.model}
+                                                        </span>
+                                                )}
 						{message.provider && (
 							<span className={`px-2 py-0.5 rounded text-xs font-medium ${isUserMessage
 									? 'bg-blue-400 text-white'

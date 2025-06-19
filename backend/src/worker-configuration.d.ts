@@ -11,4 +11,6 @@ export interface Env {
     GOOGLE_CLENDAR_REDIRECT_URI: string;
     GOOGLE_GMAIL_REDIRECT_URI: string;
     API_TIMEOUT_MS: string;
+    BOTS: string;
+    MCP_SERVERS: string;
 }

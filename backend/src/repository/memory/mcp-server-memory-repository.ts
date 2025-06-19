@@ -11,7 +11,20 @@ export class McpServerMemoryRepository implements McpServerRepository {
     this.userPrefix = userPrefix || 'default';
     this.env = env;
     if (!serversByUser[this.userPrefix]) {
-      serversByUser[this.userPrefix] = [];
+      let defaults: McpServerConfig[] = [];
+      if (this.env.MCP_SERVERS) {
+        try {
+          const parsed = JSON.parse(this.env.MCP_SERVERS);
+          if (Array.isArray(parsed)) {
+            defaults = parsed as McpServerConfig[];
+          }
+        } catch (err) {
+          console.error('Failed to parse MCP_SERVERS env:', err);
+        }
+      } else if (this.env.MCP_SERVER_URL) {
+        defaults = [{ name: 'default', url: this.env.MCP_SERVER_URL }];
+      }
+      serversByUser[this.userPrefix] = [...defaults];
     }
   }
 
@@ -20,19 +33,7 @@ export class McpServerMemoryRepository implements McpServerRepository {
   }
 
   async getMcpServers(): Promise<McpServerConfig[]> {
-    const defaults: McpServerConfig[] = [
-      {
-        name: 'default',
-        url: this.env.MCP_SERVER_URL
-      }
-    ];
-    const servers = [...this.userServers];
-    for (const d of defaults) {
-      if (!servers.some(s => s.name === d.name)) {
-        servers.push(d);
-      }
-    }
-    return servers;
+    return [...this.userServers];
   }
 
   async addMcpserver(server: McpServerConfig): Promise<void> {

@@ -17,6 +17,8 @@ export async function handleChatsRequest(
   const url = new URL(request.url);
   const path = url.pathname;
 
+  console.log('handleChatsRequest:', path, request.method);
+
   try {
     // List chats
     if (path === '/api/chats' && request.method === 'GET') {

@@ -32,10 +32,13 @@ export async function handleChatCompletions(
   const completionData = await request.json() as CompletionRequest;
   const { content, botName, chatId, userMessageId } = completionData;
 
+  console.log('Completion request payload:', completionData);
+
   const { readable, writable } = new TransformStream();
   const writer = writable.getWriter();
   const encoder = new TextEncoder();
 
+console.log('Starting chat completion for chat', chatId);
   const task = (async () => {
     try {
       console.log('User prefix:', userPrefix);
@@ -109,6 +112,7 @@ export async function handleChatCompletions(
       // Close the writer
       await writer.write(encoder.encode(`data: [DONE]\n\n`));
       await writer.close();
+      console.log('Completed streaming for chat', chatId);
     } catch (error: unknown) {
       console.error('Error processing stream:', error);
       const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';

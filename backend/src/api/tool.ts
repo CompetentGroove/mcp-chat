@@ -30,6 +30,8 @@ export async function handleToolConfirmation(
   const confirmationData = await request.json() as ConfirmationRequest;
   const { botName, server, tool, args } = confirmationData;
 
+  console.log('Tool confirmation payload:', confirmationData);
+
   const { readable, writable } = new TransformStream();
   const writer = writable.getWriter();
   const encoder = new TextEncoder();
@@ -67,6 +69,7 @@ export async function handleToolConfirmation(
       // Close the writer
       await writer.write(encoder.encode(`data: [DONE]\n\n`));
       await writer.close();
+      console.log('Completed tool stream for', server, tool);
     } catch (error) {
       console.error('Error processing stream:', error);
       writer.abort(error);

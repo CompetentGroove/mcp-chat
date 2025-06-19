@@ -11,21 +11,6 @@ export async function handleMcpServerRequest(request: Request, env: Env, userPre
   const serverName = pathParts.length > 3 ? pathParts[3] : null;
 
   try {
-    // Get MCP server configurations
-    if (path === '/api/mcp-servers' && request.method === 'GET') {
-      const servers = await mcpRepo.getMcpServers();
-      const publicServers = servers.map(({ name, url, need_confirm }) => ({
-        name,
-        url,
-        need_confirm
-      }));
-      return new Response(JSON.stringify(publicServers), {
-        headers: {
-          'Content-Type': 'application/json',
-          ...corsHeaders
-        }
-      });
-    }
     // Add a new MCP server
     if (path === '/api/mcp-server' && request.method === 'POST') {
       const mcpServerConfig: McpServerConfig = await request.json();

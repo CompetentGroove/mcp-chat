@@ -6,6 +6,7 @@ import { useToc } from '../../contexts/TocContext';
 import { useMcp } from '../../contexts/McpContext';
 import { useApi, useAuthenticatedSWR } from '../../utils/api';
 import { Chat, Message, McpServerConfig } from '@shared/types';
+import { DEFAULT_MCP_SERVERS } from '../../config';
 import { mutate } from 'swr';
 import useSWR, { SWRConfiguration } from 'swr';
 import { useMcpStatus } from '../../hooks/useMcpStatus';
@@ -116,23 +117,8 @@ export default function ChatView() {
         swrConfig
       );
 
-  // Load MCP servers from backend in regular mode
-  const [mcpServers, setMcpServers] = useState<McpServerConfig[] | undefined>(undefined);
-  useEffect(() => {
-    async function fetchServers() {
-      if (isSharedMode) return;
-      try {
-        const res = await fetch('/api/mcp-servers');
-        if (res.ok) {
-          const data = (await res.json()) as McpServerConfig[];
-          setMcpServers(data);
-        }
-      } catch (err) {
-        console.error('Failed to fetch MCP servers', err);
-      }
-    }
-    fetchServers();
-  }, [isSharedMode]);
+  // Use locally configured MCP servers
+  const [mcpServers] = useState<McpServerConfig[]>(DEFAULT_MCP_SERVERS);
 
   // Debug selectedBot changes
   useEffect(() => {
@@ -959,8 +945,6 @@ export default function ChatView() {
           <MessageInput
             message={message}
             setMessage={setMessage}
-            selectedBot={selectedBot}
-            setSelectedBot={setSelectedBot}
             isLoading={isStreaming}
             handleSubmit={handleSubmit}
             isFixed={true}

@@ -10,51 +10,6 @@ import SearchWindow from '../SearchWindow';
 const Header: React.FC = () => {
         const { toggleToc } = useToc();
         const navigate = useNavigate();
-	const [selectedBot, setSelectedBot] = useState<string | null>(null);
-
-	// Get the current path
-	const currentPath = window.location.pathname;
-
-	// Get the localStorage key based on current path
-	const storageKey = currentPath === '/'
-		? 'home_page_selected_bot'
-		: `chat_${currentPath.split('/').pop()}_selectedBot`;
-
-	// Watch for changes in localStorage
-	useEffect(() => {
-		// Initial load
-		setSelectedBot(localStorage.getItem(storageKey));
-
-		// Create storage event listener
-		const handleStorageChange = (e: StorageEvent) => {
-			if (e.key === storageKey) {
-				setSelectedBot(e.newValue);
-			}
-		};
-
-		// Add event listener
-		window.addEventListener('storage', handleStorageChange);
-
-		// Cleanup
-		return () => {
-			window.removeEventListener('storage', handleStorageChange);
-		};
-	}, [storageKey]);
-
-	// Watch for direct changes to localStorage
-	useEffect(() => {
-		const checkLocalStorage = () => {
-			const currentValue = localStorage.getItem(storageKey);
-			if (currentValue !== selectedBot) {
-				setSelectedBot(currentValue);
-			}
-		};
-
-		// Check every 100ms for changes
-		const interval = setInterval(checkLocalStorage, 100);
-
-		return () => clearInterval(interval);
-	}, [storageKey, selectedBot]);
 	const location = useLocation();
         const { isDarkMode } = useTheme();
         const [showSearchWindow, setShowSearchWindow] = useState(false);
@@ -84,11 +39,7 @@ const Header: React.FC = () => {
                                                 className="flex items-center cursor-pointer"
                                                 onClick={() => navigate('/')}
                                         >
-                                                <img
-                                                        src="https://urva.co/wp-content/uploads/2022/02/urva_logo_outline.png"
-                                                        alt="URVA logo"
-                                                        className="h-8"
-                                                />
+                                                <Logo />
                                         </a>
 				</div>
 

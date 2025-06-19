@@ -3,7 +3,6 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useTheme } from '../../contexts/ThemeContext';
 import { useToc } from '../../contexts/TocContext';
 import TocToggleButton from '../ChatView/TocToggleButton';
-import Logo from '../Logo';
 import SearchWindow from '../SearchWindow';
 
 
@@ -32,14 +31,18 @@ const Header: React.FC = () => {
 	}, [showSearchWindow]);
 
 	return (
-		<header className={`fixed top-0 z-40 w-screen h-16 sm:h-0 ${isDarkMode ? 'bg-[#1a1a1a] border-gray-800' : 'bg-white border-gray-100'} `}>
+                <header className="fixed top-0 z-40 w-screen h-16 bg-[#182144]">
 			<div className="flex items-center justify-between mx-4 mt-2 sm:mx-6 2xl:mx-8">
 				<div className="flex items-center space-x-8">
                                         <a
-                                                className="flex items-center cursor-pointer"
+                                                className="flex items-center cursor-pointer h-full"
                                                 onClick={() => navigate('/')}
                                         >
-                                                <Logo />
+                                                <img
+                                                        src="https://feetport-ssd.s3.ap-south-1.amazonaws.com/v2/678/fm/general/docs/urva%201.png"
+                                                        alt="URVA Logo"
+                                                        className="h-full w-auto"
+                                                />
                                         </a>
 				</div>
 

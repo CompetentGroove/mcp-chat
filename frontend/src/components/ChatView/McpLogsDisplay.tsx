@@ -44,8 +44,8 @@ export default function McpLogsDisplay({ logs, isVisible, onClose, isDarkMode }:
 
   return (
     <div
-      className={`w-full sm:w-[80%] h-full overflow-x-hidden overflow-y-auto ${
-        isDarkMode ? 'bg-gray-900 text-gray-300' : 'bg-gray-50 text-gray-700'
+      className={`w-full sm:w-[80%] h-full overflow-x-hidden overflow-y-auto border shadow-md ${
+        isDarkMode ? 'bg-gray-900 text-gray-300 border-gray-700' : 'bg-white text-gray-800 border-gray-200'
       } sm:rounded-lg`}
       onScroll={(e) => e.stopPropagation()}
       onWheel={(e) => e.stopPropagation()}

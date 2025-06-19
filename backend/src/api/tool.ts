@@ -40,7 +40,9 @@ export async function handleToolConfirmation(request: Request, env: Env, userPre
       const bots = await botRepository.getBots();
       const botConfig = bots.find(bot => bot.name === botName);
       if (!botConfig) {
-        return new Response('Bot not found', { status: 404, headers: corsHeaders });
+        await writer.write(encoder.encode(`data: {"error": "Bot not found"}\n\n`));
+        await writer.close();
+        return;
       }
 
       // Execute the tool directly

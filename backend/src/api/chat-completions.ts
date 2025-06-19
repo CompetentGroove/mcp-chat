@@ -43,7 +43,9 @@ export async function handleChatCompletions(request: Request, env: Env, userPref
       const bots = await botRepository.getBots();
       const botConfig = bots.find(bot => bot.name === botName);
       if (!botConfig) {
-        return new Response('Bot not found', { status: 404, headers: corsHeaders });
+        await writer.write(encoder.encode(`data: {"error": "Bot not found"}\n\n`));
+        await writer.close();
+        return;
       }
       let resultBotConfig = botConfig;
       if (!resultBotConfig.api_key || !resultBotConfig.base_url) {

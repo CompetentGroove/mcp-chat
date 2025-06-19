@@ -20,7 +20,7 @@
 
 ### Backend Implementation
 - Cloudflare Worker setup
-- R2 storage repository
+- In-memory storage repository
 - Basic API endpoints
 - Storage interfaces
 
@@ -52,16 +52,14 @@
 - [ ] Toast notifications
 - [ ] UI animations
 
-### Configuration Management
 - [x] Bot configuration display
 - [x] MCP server configuration display
-- [x] Fetching configurations from Cloudflare R2
+- [x] Loading and saving configurations with localStorage
 - [ ] Bot configuration editing
 - [ ] MCP server configuration editing
 - [ ] Adding new bots and MCP servers
 
 ### Storage Features
-- [ ] Efficient R2 access patterns
 - [ ] Data synchronization
 - [ ] Cache management
 - [ ] Performance tuning

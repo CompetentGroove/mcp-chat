@@ -3,7 +3,8 @@ import { BotConfig, McpServerConfig } from '../../../../shared/types';
 import { BotFormModal } from './BotForm';
 import { ConfirmationDialog } from './Confirm';
 import { ActionMenu } from './ActionMenu';
-import { useAuthenticatedSWR, useApi } from '../../utils/api';
+import { saveBots, getMcpServers } from '../../utils/storage';
+import { useBot } from '../../contexts/BotContext';
 
 interface BotSectionProps {
   isDarkMode: boolean;
@@ -16,6 +17,7 @@ export const BotSection: React.FC<BotSectionProps> = ({
 }) => {
   // Bot form modal state
   const [isBotFormOpen, setIsBotFormOpen] = useState(false);
+  const { bots, setBots } = useBot();
   const [selectedBot, setSelectedBot] = useState<BotConfig | undefined>(undefined);
 
   // Confirmation dialog state
@@ -26,32 +28,31 @@ export const BotSection: React.FC<BotSectionProps> = ({
   const [actionMenuBot, setActionMenuBot] = useState<string | null>(null);
   const actionMenuRef = useRef<HTMLDivElement>(null);
 
-  // API functions
-  const api = useApi();
+  // Local storage state
+  const [mcpServers, setMcpServers] = useState<McpServerConfig[]>([]);
 
-  // Fetch configurations using authenticated SWR
-  const { data: bots, error: botsError, isLoading: botsLoading, mutate: mutateBots } =
-    useAuthenticatedSWR<BotConfig[]>('/api/bots');
-  const { data: mcpServers, error: mcpError, isLoading: mcpLoading } =
-    useAuthenticatedSWR<McpServerConfig[]>('/api/mcp-servers');
+  useEffect(() => {
+    setMcpServers(getMcpServers());
+  }, []);
 
   // Handle bot form submission
   const handleBotSubmit = async (bot: BotConfig) => {
     try {
+      const updated = [...bots];
       if (selectedBot) {
-        // Update existing bot
-        await api.put(`/api/bot/${selectedBot.name}`, bot);
+        const idx = updated.findIndex(b => b.name === selectedBot.name);
+        if (idx !== -1) {
+          updated[idx] = bot;
+        }
         setStatusMessage({ type: 'success', text: `Bot "${bot.name}" updated successfully` });
       } else {
-        // Add new bot
-        await api.post('/api/bot', bot);
+        updated.push(bot);
         setStatusMessage({ type: 'success', text: `Bot "${bot.name}" added successfully` });
       }
-
-      // Close the form and refresh the bot list
+      setBots(updated);
+      saveBots(updated);
       setIsBotFormOpen(false);
       setSelectedBot(undefined);
-      mutateBots();
     } catch (error) {
       console.error('Error saving bot:', error);
       setStatusMessage({ type: 'error', text: `Failed to save bot: ${error instanceof Error ? error.message : 'Unknown error'}` });
@@ -63,9 +64,10 @@ export const BotSection: React.FC<BotSectionProps> = ({
     if (!botToDelete) return;
 
     try {
-      await api.delete(`/api/bot/${botToDelete}`);
+      const updated = bots.filter(b => b.name !== botToDelete);
+      setBots(updated);
+      saveBots(updated);
       setStatusMessage({ type: 'success', text: `Bot deleted successfully` });
-      mutateBots();
     } catch (error) {
       console.error('Error deleting bot:', error);
       setStatusMessage({ type: 'error', text: `Failed to delete bot: ${error instanceof Error ? error.message : 'Unknown error'}` });
@@ -130,21 +132,7 @@ export const BotSection: React.FC<BotSectionProps> = ({
       <p className={`${isDarkMode ? 'text-gray-400' : 'text-gray-500'} mb-6 text-sm sm:text-base`}>Manage your bot configurations</p>
 
       <div className={`${isDarkMode ? 'bg-[#1a1a1a] border-gray-700' : 'bg-white border-gray-200'} border rounded-lg overflow-hidden`}>
-        {botsLoading ? (
-          <div className="p-4 text-center">
-            <div className={`animate-pulse ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>Loading bot configurations...</div>
-          </div>
-        ) : botsError ? (
-          <div className="p-4 text-center">
-            <div className="text-red-500">Error loading bot configurations</div>
-            <button
-              onClick={() => window.location.reload()}
-              className="mt-2 text-sm text-blue-500 hover:underline"
-            >
-              Try again
-            </button>
-          </div>
-        ) : bots && bots.length > 0 ? (
+        {bots && bots.length > 0 ? (
           bots.map((bot, index) => (
           <div key={bot.name} className={`${index !== bots.length - 1 ? isDarkMode ? 'border-b border-gray-700' : 'border-b border-gray-200' : ''} p-4`}>
             <div className="flex justify-between items-center">

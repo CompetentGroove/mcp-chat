@@ -1,34 +1,34 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 import { BotConfig } from '@shared/types';
-import { useAuthenticatedSWR } from '../utils/api';
+import { getBots, saveBots } from '../utils/storage';
 
 interface BotContextType {
-  bots: BotConfig[] | undefined;
+  bots: BotConfig[];
+  setBots: React.Dispatch<React.SetStateAction<BotConfig[]>>;
   selectedBot: string | undefined;
   setSelectedBot: React.Dispatch<React.SetStateAction<string | undefined>>;
-  isLoading: boolean;
 }
 
 const BotContext = createContext<BotContextType | undefined>(undefined);
 
 export function BotProvider({ children }: { children: React.ReactNode }) {
+  const [bots, setBots] = useState<BotConfig[]>(() => getBots());
   const [selectedBot, setSelectedBot] = useState<string | undefined>(undefined);
 
-  const { data: bots, isLoading } = useAuthenticatedSWR<BotConfig[]>('/api/bots', {
-    revalidateOnFocus: false,
-    revalidateOnReconnect: true,
-    refreshInterval: 0,
-    dedupingInterval: 2000,
-    onSuccess: (data) => {
-      // Set the first bot as default if nothing is selected yet
-      if (!selectedBot && data && data.length > 0) {
-        setSelectedBot(data[0].name);
-      }
+  useEffect(() => {
+    const stored = getBots();
+    setBots(stored);
+    if (!selectedBot && stored.length > 0) {
+      setSelectedBot(stored[0].name);
     }
-  });
+  }, []);
+
+  useEffect(() => {
+    saveBots(bots);
+  }, [bots]);
 
   return (
-    <BotContext.Provider value={{ bots, selectedBot, setSelectedBot, isLoading }}>
+    <BotContext.Provider value={{ bots, setBots, selectedBot, setSelectedBot }}>
       {children}
     </BotContext.Provider>
   );

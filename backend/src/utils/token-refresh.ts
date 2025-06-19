@@ -1,5 +1,5 @@
 import { IntegrationConfig } from '../../../shared/types';
-import { IntegrationD1Repository } from '../repository/d1/integration-d1-repository';
+import { IntegrationMemoryRepository } from '../repository/memory/integration-memory-repository';
 import { Env } from '../worker-configuration';
 
 /**
@@ -16,7 +16,6 @@ export async function refreshIntegrationToken(
   integration: IntegrationConfig,
   clientId: string,
   clientSecret: string,
-  db: D1Database,
   userPrefix: string
 ): Promise<IntegrationConfig | null> {
   if (!integration.credentials?.refresh_token) {
@@ -67,7 +66,7 @@ export async function refreshIntegrationToken(
     };
 
     // Save the updated integration
-    const repo = new IntegrationD1Repository(db, userPrefix);
+    const repo = new IntegrationMemoryRepository(userPrefix);
     await repo.updateIntegration(integration.name, updatedIntegration);
     
     console.log(`Successfully refreshed token for ${integration.name}`);
@@ -87,7 +86,6 @@ export async function refreshIntegrationToken(
  */
 export async function checkAndRefreshTokens(
   env: {
-    CHAT_DB: D1Database;
     GOOGLE_CLIENT_ID: string;
     GOOGLE_CLIENT_SECRET: string;
   },
@@ -95,7 +93,7 @@ export async function checkAndRefreshTokens(
   expiryThresholdMs: number = 300 * 60 * 1000 // Default: refresh if expiring in 300 minutes
 ) {
   try {
-    const repo = new IntegrationD1Repository(env.CHAT_DB, userPrefix);
+    const repo = new IntegrationMemoryRepository(userPrefix);
     const integrations = await repo.getIntegrations();
     
     const now = Date.now();
@@ -118,7 +116,6 @@ export async function checkAndRefreshTokens(
             integration,
             env.GOOGLE_CLIENT_ID,
             env.GOOGLE_CLIENT_SECRET,
-            env.CHAT_DB,
             userPrefix
           );
         }

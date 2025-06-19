@@ -24,8 +24,8 @@ See how y-gui uses MCP integrations to extend AI capabilities:
   - 📅 Google Calendar integration for event scheduling
   - 🖼️ Image generation capabilities
   - 🧩 Expandable framework for additional MCP servers and tools
-  - 🌓 Dark/light theme support
-- 📝 All chat data stored in Cloudflare D1 for easy access and sync
+- 🌓 Dark/light theme support
+- 📝 Chat data stored in memory (cleared on refresh)
 - 🔄 Real-time updates with SWR
 - 📱 Responsive design for all devices
 
@@ -34,12 +34,11 @@ See how y-gui uses MCP integrations to extend AI capabilities:
 y-gui consists of two main components:
 
 1. **Frontend**: React application with TypeScript, Tailwind CSS, and SWR for data fetching
-2. **Backend**: Cloudflare Workers with D1 storage
+2. **Backend**: Cloudflare Workers with in-memory storage
 
 ```mermaid
 flowchart TD
     Client[React Client] --> Worker[Cloudflare Worker]
-    Worker --> D1[Cloudflare D1]
     Worker --> AI[AI Providers]
 
     subgraph "Frontend"
@@ -170,14 +169,14 @@ The backend provides RESTful API endpoints for:
 
 ## 🔄 Data Storage
 
-- Chat data is stored in Cloudflare D1
-- Bot and MCP server configurations are stored in Cloudflare D1
+- Chat data is stored in memory (not persisted)
+- Bot and MCP server configurations are stored in memory
 - MCP integration data is securely managed through authorized API connections
 
 ## 🧩 Technologies Used
 
 - **Frontend**: React, TypeScript, Tailwind CSS, SWR
-- **Backend**: Cloudflare Workers, D1
+- **Backend**: Cloudflare Workers with in-memory storage
 - **Integrations**: MCP servers, OAuth2, Gmail API, Google Calendar API, Image Generation APIs
 - **Build Tools**: Vite, Wrangler, TypeScript
 

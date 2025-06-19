@@ -1,4 +1,4 @@
-import { ChatD1Repository } from '../repository/d1/chat-d1-repository';
+import { ChatMemoryRepository } from '../repository/memory/chat-memory-repository';
 import { corsHeaders } from '../middleware/cors';
 import { Env } from 'worker-configuration';
 import { ShareService } from '../service/share';
@@ -8,8 +8,8 @@ interface ShareRequestBody {
 }
 
 export async function handleShareRequest(request: Request, env: Env, userPrefix?: string): Promise<Response> {
-  const chatRepository = new ChatD1Repository(env.CHAT_DB, userPrefix);
-  const publicChatRepository = new ChatD1Repository(env.CHAT_DB);
+  const chatRepository = new ChatMemoryRepository(userPrefix);
+  const publicChatRepository = new ChatMemoryRepository();
   const shareService = new ShareService(chatRepository, publicChatRepository);
   
   const url = new URL(request.url);

@@ -1,13 +1,13 @@
 import { Chat, Message } from '../../../shared/types';
-import { ChatD1Repository } from '../repository/d1/chat-d1-repository';
-import { BotD1Repository } from '../repository/d1/bot-d1-repository';
+import { ChatMemoryRepository } from '../repository/memory/chat-memory-repository';
+import { BotMemoryRepository } from '../repository/memory/bot-memory-repository';
 import { corsHeaders } from '../middleware/cors';
 import { ProviderFactory } from '../providers/provider-factory';
 import { McpManager } from '../mcp/mcp-manager';
 import { ChatService } from '../service/chat';
 import { createMessage } from 'src/utils/message';
-import { McpServerD1Repository } from 'src/repository/d1/mcp-server-d1-repository';
-import { IntegrationD1Repository } from '../repository/d1/integration-d1-repository';
+import { McpServerMemoryRepository } from 'src/repository/memory/mcp-server-memory-repository';
+import { IntegrationMemoryRepository } from '../repository/memory/integration-memory-repository';
 import { Env } from 'worker-configuration';
 
 /**
@@ -34,12 +34,12 @@ export async function handleChatCompletions(request: Request, env: Env, userPref
     try {
       console.log('User prefix:', userPrefix);
       // Get or create the chat
-      const chatRepository = new ChatD1Repository(env.CHAT_DB, userPrefix);
+      const chatRepository = new ChatMemoryRepository(userPrefix);
 
       // Get the bot config
-      const botRepository = new BotD1Repository(env.CHAT_DB, env, userPrefix);
-      const mcpServerRepository = new McpServerD1Repository(env.CHAT_DB, env, userPrefix);
-      const integrationRepository = new IntegrationD1Repository(env.CHAT_DB, userPrefix);
+      const botRepository = new BotMemoryRepository(env, userPrefix);
+      const mcpServerRepository = new McpServerMemoryRepository(env, userPrefix);
+      const integrationRepository = new IntegrationMemoryRepository(userPrefix);
       const bots = await botRepository.getBots();
       const botConfig = bots.find(bot => bot.name === botName);
       if (!botConfig) {

@@ -38,7 +38,10 @@ export async function handleChatCompletions(
   const writer = writable.getWriter();
   const encoder = new TextEncoder();
 
-console.log('Starting chat completion for chat', chatId);
+
+  console.log('Starting chat completion for chat', chatId);
+
+
   const task = (async () => {
     try {
       console.log('User prefix:', userPrefix);

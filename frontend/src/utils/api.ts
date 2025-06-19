@@ -33,3 +33,8 @@ export function useApi() {
       fetchWithAuth<T>(url, { method: 'DELETE' }),
   };
 }
+
+export default {
+  useAuthenticatedSWR,
+  useApi,
+};

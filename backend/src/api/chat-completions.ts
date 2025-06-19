@@ -9,12 +9,18 @@ import { createMessage } from 'src/utils/message';
 import { McpServerMemoryRepository } from 'src/repository/memory/mcp-server-memory-repository';
 import { IntegrationMemoryRepository } from '../repository/memory/integration-memory-repository';
 import { Env } from 'worker-configuration';
+import type { ExecutionContext } from '@cloudflare/workers-types';
 
 /**
  * Handle the chat completions endpoint
  * This function processes requests to send messages to a chat and get AI responses
  */
-export async function handleChatCompletions(request: Request, env: Env, userPrefix?: string): Promise<Response> {
+export async function handleChatCompletions(
+  request: Request,
+  env: Env,
+  userPrefix?: string,
+  ctx?: ExecutionContext
+): Promise<Response> {
   // Get message data from request
   interface CompletionRequest {
     content: string;
@@ -30,7 +36,7 @@ export async function handleChatCompletions(request: Request, env: Env, userPref
   const writer = writable.getWriter();
   const encoder = new TextEncoder();
 
-  (async () => {
+  const task = (async () => {
     try {
       console.log('User prefix:', userPrefix);
       // Get or create the chat
@@ -43,7 +49,9 @@ export async function handleChatCompletions(request: Request, env: Env, userPref
       const bots = await botRepository.getBots();
       const botConfig = bots.find(bot => bot.name === botName);
       if (!botConfig) {
-        return new Response('Bot not found', { status: 404, headers: corsHeaders });
+        await writer.write(encoder.encode(`data: {"error": "Bot not found"}\n\n`));
+        await writer.close();
+        return;
       }
       let resultBotConfig = botConfig;
       if (!resultBotConfig.api_key || !resultBotConfig.base_url) {
@@ -108,6 +116,8 @@ export async function handleChatCompletions(request: Request, env: Env, userPref
       await writer.close();
     }
   })();
+
+  ctx?.waitUntil(task);
   
   // Return the streaming response
   return new Response(readable, {

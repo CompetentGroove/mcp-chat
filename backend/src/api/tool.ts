@@ -6,7 +6,7 @@ import { IntegrationMemoryRepository } from '../repository/memory/integration-me
 import { Message } from '../../../shared/types';
 import { createMessage } from 'src/utils/message';
 import { Env } from 'worker-configuration';
-import type { ExecutionContext } from '@cloudflare/workers-types';
+import type { ExecutionContext } from 'hono/dist/types/context';
 
 /**
  * Handle tool execution confirmation

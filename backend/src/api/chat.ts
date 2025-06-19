@@ -5,7 +5,7 @@ import { handleChatCompletions } from './chat-completions';
 import { handleSelectResponse } from './chat-select';
 import { generateUniqueId } from '../utils/chat';
 import { Env } from 'worker-configuration';
-import type { ExecutionContext } from '@cloudflare/workers-types';
+import type { ExecutionContext } from 'hono/dist/types/context';
 
 export async function handleChatsRequest(
   request: Request,

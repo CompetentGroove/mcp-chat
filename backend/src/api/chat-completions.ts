@@ -9,7 +9,7 @@ import { createMessage } from 'src/utils/message';
 import { McpServerMemoryRepository } from 'src/repository/memory/mcp-server-memory-repository';
 import { IntegrationMemoryRepository } from '../repository/memory/integration-memory-repository';
 import { Env } from 'worker-configuration';
-import type { ExecutionContext } from '@cloudflare/workers-types';
+import type { ExecutionContext } from 'hono/dist/types/context';
 
 /**
  * Handle the chat completions endpoint

@@ -54,7 +54,7 @@
 
 - [x] Bot configuration display
 - [x] MCP server configuration display
-- [x] Loading and saving configurations with localStorage
+- [x] Loading default configurations from `wrangler.toml` and saving to localStorage
 - [ ] Bot configuration editing
 - [ ] MCP server configuration editing
 - [ ] Adding new bots and MCP servers

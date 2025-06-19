@@ -456,6 +456,8 @@ export default function ChatView() {
       });
 
       if (!response.ok) {
+        const errorText = await response.text();
+        console.error('Streaming request failed:', response.status, errorText);
         throw new Error(`Error sending message: ${response.statusText}`);
       }
 
@@ -480,8 +482,8 @@ export default function ChatView() {
 
           for (let i = 0; i < lines.length - 1; i++) {
             const line = lines[i];
-            if (line.startsWith('data: ')) {
-              const data = line.slice(6);
+            if (line.startsWith('data:')) {
+              const data = line.replace(/^data:\s*/, '').trim();
 
               if (data === '[DONE]') {
                 reader.cancel();
@@ -539,7 +541,7 @@ export default function ChatView() {
                   await handleToolResult(parsedData.content || '', parsedData.server || '');
                 }
               } catch (e) {
-                console.error('Error parsing SSE data:', e);
+                console.error('Error parsing SSE data for line:', line, e);
               }
             }
           }
